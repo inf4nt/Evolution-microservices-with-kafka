@@ -6,16 +6,17 @@ import com.evolution.user.layer.query.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 
 import java.util.Optional;
 
-@EnableBinding(UserStateSink.class)
+@EnableBinding(Sink.class)
 public class UserStateSinkStream {
 
     @Autowired
     private UserRepository userRepository;
 
-    @StreamListener(UserStateSink.INPUT_RESULT_STATE)
+    @StreamListener(Sink.INPUT)
     public void processState(UserStateEvent event) {
         Optional<UserState> original = userRepository.findById(event.getId());
         UserState us = new UserState();

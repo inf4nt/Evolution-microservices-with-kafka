@@ -1,9 +1,9 @@
-package com.evolution.user.service;
+package com.evolution.user.processor.service;
 
-import com.evolution.user.event.UserCreateEvent;
-import com.evolution.user.event.UserStateEvent;
-import com.evolution.user.event.UserUpdateEvent;
-import org.apache.commons.lang.StringUtils;
+import com.evolution.user.processor.event.UserCreateEvent;
+import com.evolution.user.processor.event.UserStateEvent;
+import com.evolution.user.processor.event.UserUpdateEvent;
+import org.springframework.util.StringUtils;
 
 import java.util.UUID;
 

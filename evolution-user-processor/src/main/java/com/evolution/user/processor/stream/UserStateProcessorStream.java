@@ -1,10 +1,9 @@
-package com.evolution.user.stream;
+package com.evolution.user.processor.stream;
 
-import com.evolution.user.event.UserCreateEvent;
-import com.evolution.user.event.UserStateEvent;
-import com.evolution.user.event.UserUpdateEvent;
-import com.evolution.user.layer.query.repository.UserRepository;
-import com.evolution.user.service.UserEventBuilder;
+import com.evolution.user.processor.event.UserCreateEvent;
+import com.evolution.user.processor.event.UserStateEvent;
+import com.evolution.user.processor.event.UserUpdateEvent;
+import com.evolution.user.processor.service.UserEventBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -22,17 +21,14 @@ import java.util.concurrent.TimeUnit;
 @EnableBinding(UserStateProcessor.class)
 public class UserStateProcessorStream {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @StreamListener
     @SendTo(UserStateProcessor.OUTPUT_RESULT)
     public KStream<String, UserStateEvent> generateStateKStream(@Input(UserStateProcessor.INPUT_CREATE) KStream<String, UserCreateEvent> createStream,
                                                                 @Input(UserStateProcessor.INPUT_UPDATE) KStream<String, UserUpdateEvent> updateStream) {
 
-        Serde<UserCreateEvent> serdeCreate = new JsonSerde<>(UserCreateEvent.class, objectMapper);
+        Serde<UserCreateEvent> serdeCreate = new JsonSerde<>(UserCreateEvent.class);
 
-        Serde<UserUpdateEvent> serdeUpdate = new JsonSerde<>(UserUpdateEvent.class, objectMapper);
+        Serde<UserUpdateEvent> serdeUpdate = new JsonSerde<>(UserUpdateEvent.class);
 
         return createStream.leftJoin(updateStream, (create, update) -> UserEventBuilder.buildState(create, update), JoinWindows.of(TimeUnit.MINUTES.toMillis(5)),
                 Serdes.String(),

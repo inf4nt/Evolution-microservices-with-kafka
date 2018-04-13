@@ -1,4 +1,4 @@
-package com.evolution.user.stream;
+package com.evolution.user.processor.stream;
 
 import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.cloud.stream.annotation.Output;
