@@ -1,8 +1,13 @@
+spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
+
 spring:
   application:
     name: 'evolution-user-processor'
   kafka:
     bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
+      group-id: 'evolution-user-2'
   cloud:
     stream:
       bindings:
@@ -15,7 +20,6 @@ spring:
       kafka:
         binder:
           configuration:
-            commit.interval.ms: 1000
             default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
             default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
 server:

@@ -1,18 +1,19 @@
 package com.evolution.user.processor.stream;
 
 import org.apache.kafka.streams.kstream.KStream;
+import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 
 public interface UserStateProcessor {
 
     String INPUT_CREATE = "input-create";
 
-    @Output(INPUT_CREATE)
+    @Input(INPUT_CREATE)
     KStream<?, ?> create();
 
     String INPUT_UPDATE = "input-update";
 
-    @Output(INPUT_UPDATE)
+    @Input(INPUT_UPDATE)
     KStream<?, ?> update();
 
     String OUTPUT_RESULT = "output-result-state";
