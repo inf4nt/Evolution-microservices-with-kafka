@@ -15,7 +15,7 @@ public interface UserStateProcessor {
     @Output(INPUT_UPDATE)
     KStream<?, ?> update();
 
-    String OUTPUT_RESULT = "output-result";
+    String OUTPUT_RESULT = "output-result-state";
 
     @Output(OUTPUT_RESULT)
     KStream<?, ?> result();
