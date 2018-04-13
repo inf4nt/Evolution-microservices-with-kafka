@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: 'evolution-direct-message'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+  data:
+    rest:
+      base-path: '/state'

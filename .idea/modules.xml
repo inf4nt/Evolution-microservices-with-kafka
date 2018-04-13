@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Evolution source microservices.iml" filepath="$PROJECT_DIR$/Evolution source microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evolution-direct-message/evolution-direct-message.iml" filepath="$PROJECT_DIR$/evolution-direct-message/evolution-direct-message.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evolution-direct-message-processor/evolution-direct-message-processor.iml" filepath="$PROJECT_DIR$/evolution-direct-message-processor/evolution-direct-message-processor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evolution-user/evolution-user.iml" filepath="$PROJECT_DIR$/evolution-user/evolution-user.iml" />
+    </modules>
+  </component>
+</project>
