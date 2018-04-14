@@ -7,7 +7,7 @@ spring:
     bootstrap-servers: 'localhost:9092'
     consumer:
       auto-offset-reset: earliest
-      group-id: 'evolution-user-1'
+      group-id: 'evolution-user'
   cloud:
     stream:
       bindings:

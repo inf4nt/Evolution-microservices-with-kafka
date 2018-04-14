@@ -6,8 +6,8 @@ spring:
   kafka:
     bootstrap-servers: 'localhost:9092'
     consumer:
+      group-id: 'evolution-user-processor'
       auto-offset-reset: earliest
-      group-id: 'evolution-user-2'
   cloud:
     stream:
       bindings:
@@ -18,9 +18,10 @@ spring:
         output-result-state:
           destination: UserStateEventTopic
       kafka:
-        binder:
-          configuration:
-            default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-            default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+       streams:
+          binder:
+            configuration:
+              default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
 server:
   port: 8481

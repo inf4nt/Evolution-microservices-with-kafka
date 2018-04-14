@@ -31,6 +31,7 @@ public class UserStateSinkStream {
             us = original.get();
         }
 
+        us.setId(event.getId());
         us.setEventId(event.getEventId());
         us.setUsername(event.getUsername());
         us.setPassword(event.getPassword());

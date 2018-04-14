@@ -28,6 +28,7 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .lastName(request.getLastName())
                 .nickname(request.getNickname())
                 .datePost(new Date())
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
                 .build();
 
         kafkaTemplate.send(event.getTopic(), event.getId(), event);
