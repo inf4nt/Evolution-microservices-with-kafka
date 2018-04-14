@@ -1,4 +1,4 @@
-spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
+spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 100
 
 spring:
   application:
@@ -7,7 +7,6 @@ spring:
     bootstrap-servers: 'localhost:9092'
     consumer:
       auto-offset-reset: earliest
-      group-id: 'evolution-user'
   cloud:
     stream:
       bindings:

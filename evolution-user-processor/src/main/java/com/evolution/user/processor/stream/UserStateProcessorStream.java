@@ -36,6 +36,10 @@ public class UserStateProcessorStream {
         logger.info("Catch streams: " + createStream + ", " + updateStream);
         logger.info("Start create state stream");
 
+        createStream
+                .foreach((k ,v) -> System.out.println("key:" + k + ", " +
+                        "value:" + v));
+
         Serde<UserCreateEvent> serdeCreate = new JsonSerde<>(UserCreateEvent.class, objectMapper);
         Serde<UserUpdateEvent> serdeUpdate = new JsonSerde<>(UserUpdateEvent.class, objectMapper);
 
