@@ -6,18 +6,18 @@ import org.springframework.cloud.stream.annotation.Output;
 
 public interface UserStateProcessor {
 
-    String INPUT_CREATE = "input-create";
+    String INPUT_CREATE_USER = "input-create-user";
 
-    @Input(INPUT_CREATE)
+    @Input(INPUT_CREATE_USER)
     KStream<?, ?> create();
 
-    String INPUT_UPDATE = "input-update";
+//    String INPUT_UPDATE = "input-update-user";
+//
+//    @Input(INPUT_UPDATE)
+//    KStream<?, ?> update();
 
-    @Input(INPUT_UPDATE)
-    KStream<?, ?> update();
+    String OUTPUT_STATE_USER = "output-state-user";
 
-    String OUTPUT_RESULT = "output-result-state";
-
-    @Output(OUTPUT_RESULT)
+    @Output(OUTPUT_STATE_USER)
     KStream<?, ?> result();
 }

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: 'evolution-direct-message-stream-processor'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+  cloud:
+    stream:
+      bindings:
+        input-create-message:
+          destination: CreateMessageEventTopic
+        input-update-text-message:
+          destination: UpdateTextMessageEventTopic
+        input-user-state:
+          destination: UserStateEventTopic
+      kafka:
+        streams:
+          binder:
+            configuration:
+                commit.interval.ms: 1000
+                default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                default.value.serde: org.springframework.kafka.support.serializer.JsonSerde

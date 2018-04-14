@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -34,4 +35,21 @@ public class UserState {
     Date datePost;
 
     Date datePut;
+
+
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        if (!super.equals(o)) return false;
+//        UserState userState = (UserState) o;
+//        return Objects.equals(id, userState.id);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//
+//        return Objects.hash(super.hashCode(), id);
+//    }
 }
