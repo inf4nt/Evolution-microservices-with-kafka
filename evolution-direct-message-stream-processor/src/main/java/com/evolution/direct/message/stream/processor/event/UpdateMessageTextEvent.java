@@ -14,7 +14,7 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class UpdateTextMessageEvent {
+public class UpdateMessageTextEvent {
 
     String id;
 

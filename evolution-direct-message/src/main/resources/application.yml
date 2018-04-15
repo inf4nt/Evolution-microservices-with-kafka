@@ -11,7 +11,23 @@ spring:
   cloud:
     stream:
       bindings:
+        input-create-message:
+          destination: CreateMessageEventTopic
+        input-update-text-message:
+          destination: UpdateMessageTextEventTopic
+        output-state-message:
+          destination: MessageStateEventTopic
         input:
           destination: MessageStateEventTopic
+#        other channel
+        input-state-user:
+          destination: UserStateEventTopic
+      kafka:
+        streams:
+          binder:
+            configuration:
+                commit.interval.ms: 1000
+                default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
 server:
   port: 8181

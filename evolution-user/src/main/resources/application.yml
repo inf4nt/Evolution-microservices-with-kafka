@@ -10,6 +10,12 @@ spring:
   cloud:
     stream:
       bindings:
+        input-create-user:
+          destination: UserCreateEventTopic
+        input-update-user:
+          destination: UserUpdateEventTopic
+        output-state-user:
+          destination: UserStateEventTopic
         input:
           destination: UserStateEventTopic
       kafka:

@@ -9,7 +9,7 @@ spring:
         input-create-message:
           destination: CreateMessageEventTopic
         input-update-text-message:
-          destination: UpdateTextMessageEventTopic
+          destination: UpdateMessageTextEventTopic
         input-user-state:
           destination: UserStateEventTopic
       kafka:
