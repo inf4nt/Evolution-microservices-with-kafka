@@ -1,8 +1,7 @@
 package com.evolution.direct.message.service;
 
-import com.evolution.direct.message.event.MessageCreateEvent;
-import com.evolution.direct.message.event.MessageStateEvent;
-import com.evolution.direct.message.event.MessageUpdateTextEvent;
+import com.evolution.direct.message.event.*;
+import com.evolution.direct.message.share.User;
 
 import java.util.UUID;
 
@@ -17,6 +16,19 @@ public class MessageEventBuilder {
                 .postDate(createEvent.getPostDate())
                 .text(updateTextEvent == null ? createEvent.getText() : updateTextEvent.getText())
                 .putDate(updateTextEvent == null ? createEvent.getPostDate() : updateTextEvent.getPutDate())
+                .build();
+    }
+
+    public static MessageDenormalizationStateEvent buildStateForSender(MessageStateEvent messageTempStateEvent, UserStateEvent userStateEvent) {
+        return MessageDenormalizationStateEvent
+                .builder()
+                .id(messageTempStateEvent.getId())
+                .text(messageTempStateEvent.getText())
+                .sender(new User(userStateEvent.getId(), userStateEvent.getFirstName(), userStateEvent.getLastName(), userStateEvent.getNickname()))
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
+                .isRead(messageTempStateEvent.isRead())
+                .postDate(messageTempStateEvent.getPostDate())
+                .putDate(messageTempStateEvent.getPutDate())
                 .build();
     }
 
