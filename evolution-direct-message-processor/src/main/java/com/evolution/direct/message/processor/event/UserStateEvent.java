@@ -14,23 +14,23 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class MessageStateEvent {
+public class UserStateEvent {
 
     String id;
 
     String eventId;
 
-    String superId;
+    String username;
 
-    String text;
+    String password;
 
-    String sender;
+    String firstName;
 
-    String recipient;
+    String lastName;
 
-    Date postDate;
+    String nickname;
 
-    Date putDate;
+    Date datePost;
 
-    boolean isRead;
+    Date datePut;
 }

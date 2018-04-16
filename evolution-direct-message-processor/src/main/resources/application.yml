@@ -8,12 +8,22 @@ spring:
   cloud:
     stream:
       bindings:
+#       MessageStateKProcessor
         input-message-create:
           destination: MessageCreateEventTopic
         input-message-update-text:
           destination: MessageUpdateTextEventTopic
         output-message-state:
           destination: MessageStateEventTopic
+#       MessageStateKProcessor
+#       MessageDerormalizationStateKProcessor
+        input-message-state:
+          destination: MessageStateEventTopic
+        input-user-state:
+          destination: UserStateEventTopic
+        output-message-denormalization-state:
+          destination: MessageDenormalizationStateEventTopic
+#       MessageDerormalizationStateKProcessor
       kafka:
         streams:
           binder:
