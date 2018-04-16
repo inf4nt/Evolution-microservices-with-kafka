@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
+import java.util.Date;
+
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -12,9 +14,13 @@ import lombok.experimental.Wither;
 @ToString
 @Builder
 @Wither
-public class UpdateMessageIsReadEvent implements MessageEvent {
+public class MessageUpdateTextEvent implements MessageEvent {
 
     String id;
 
     String eventId;
+
+    String text;
+
+    Date putDate;
 }

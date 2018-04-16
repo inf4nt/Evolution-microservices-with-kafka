@@ -11,20 +11,21 @@ spring:
   cloud:
     stream:
       bindings:
-        input-create-message:
-          destination: CreateMessageEventTopic
-        input-update-text-message:
-          destination: UpdateMessageTextEventTopic
-        output-state-message:
-          destination: MessageStateEventTopic
+#        input-create-message:
+#          destination: CreateMessageEventTopic
+#        input-update-text-message:
+#          destination: UpdateMessageTextEventTopic
+#        output-state-message:
+#          destination: MessageStateEventTopic
         input:
           destination: MessageStateEventTopic
 #        other channel
-        input-state-user:
-          destination: UserStateEventTopic
+#        input-state-user:
+#          destination: UserStateEventTopic
       kafka:
         streams:
           binder:
+            applicationId: 'evolution-direct-message'
             configuration:
                 commit.interval.ms: 1000
                 default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde

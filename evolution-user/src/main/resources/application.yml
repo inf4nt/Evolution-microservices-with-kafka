@@ -21,6 +21,7 @@ spring:
       kafka:
         streams:
           binder:
+            applicationId: 'evolution-user'
             configuration:
               default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
               default.value.serde: org.springframework.kafka.support.serializer.JsonSerde

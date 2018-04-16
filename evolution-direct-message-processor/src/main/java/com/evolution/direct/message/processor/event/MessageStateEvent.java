@@ -1,5 +1,4 @@
-package com.evolution.direct.message.stream.processor.event;
-
+package com.evolution.direct.message.processor.event;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,24 +14,21 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class UserStateEvent {
-
+public class MessageStateEvent {
 
     String id;
 
     String eventId;
 
-    String username;
+    String text;
 
-    String password;
+    String sender;
 
-    String firstName;
+    String recipient;
 
-    String lastName;
+    Date postDate;
 
-    String nickname;
+    Date putDate;
 
-    Date datePost;
-
-    Date datePut;
+    boolean isRead;
 }

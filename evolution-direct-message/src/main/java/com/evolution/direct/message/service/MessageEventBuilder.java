@@ -2,24 +2,23 @@ package com.evolution.direct.message.service;
 
 import com.evolution.direct.message.event.*;
 import com.evolution.direct.message.share.User;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.UUID;
 
 public class MessageEventBuilder {
 
-    public static MessageTempStateEvent buildTemp(CreateMessageEvent createMessageEvent, UpdateMessageTextEvent updateMessageTextEvent) {
+    public static MessageTempStateEvent buildTemp(MessageCreateEvent messageCreateEvent, MessageUpdateTextEvent messageUpdateTextEvent) {
         return MessageTempStateEvent
                 .builder()
-                .id(createMessageEvent.getId())
+                .id(messageCreateEvent.getId())
                 .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
-                .text(updateMessageTextEvent == null ? createMessageEvent.getText() : updateMessageTextEvent.getText())
-                .sender(createMessageEvent.getSender())
-                .recipient(createMessageEvent.getRecipient())
-                .isRead(updateMessageTextEvent != null)
-                .postDate(createMessageEvent.getPostDate())
-                .putDate(updateMessageTextEvent == null ? createMessageEvent.getPostDate() : updateMessageTextEvent.getPutDate())
-                .supperId(createMessageEvent.getId())
+                .text(messageUpdateTextEvent == null ? messageCreateEvent.getText() : messageUpdateTextEvent.getText())
+                .sender(messageCreateEvent.getSender())
+                .recipient(messageCreateEvent.getRecipient())
+                .isRead(messageUpdateTextEvent != null)
+                .postDate(messageCreateEvent.getPostDate())
+                .putDate(messageUpdateTextEvent == null ? messageCreateEvent.getPostDate() : messageUpdateTextEvent.getPutDate())
+                .supperId(messageCreateEvent.getId())
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package com.evolution.direct.message.layer.command.service;
 
-import com.evolution.direct.message.event.CreateMessageEvent;
+import com.evolution.direct.message.event.MessageCreateEvent;
 import com.evolution.direct.message.event.MessageEvent;
 import com.evolution.direct.message.layer.command.dto.MessageCreateRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class MessageCommandServiceImpl implements MessageCommandService {
 
     @Override
     public void postMessage(MessageCreateRequestDTO requestDTO) {
-        CreateMessageEvent event = CreateMessageEvent.builder()
+        MessageCreateEvent event = MessageCreateEvent.builder()
                 .id(UUID.randomUUID().toString().replaceAll("-", ""))
                 .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
                 .text(requestDTO.getText())

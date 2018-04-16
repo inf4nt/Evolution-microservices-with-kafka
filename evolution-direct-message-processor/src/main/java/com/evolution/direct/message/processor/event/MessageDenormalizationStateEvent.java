@@ -1,9 +1,9 @@
-package com.evolution.direct.message.stream.processor.event;
+package com.evolution.direct.message.processor.event;
 
+import com.evolution.direct.message.processor.share.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
-
 import java.util.Date;
 
 @Getter
@@ -14,17 +14,21 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class CreateMessageEvent {
+public class MessageDenormalizationStateEvent {
 
     String id;
 
+    String eventId;
+
     String text;
 
-    String sender;
+    User sender;
 
-    String recipient;
+    User recipient;
+
+    Date postDate;
+
+    Date putDate;
 
     boolean isRead;
-
-    Date datePost;
 }
