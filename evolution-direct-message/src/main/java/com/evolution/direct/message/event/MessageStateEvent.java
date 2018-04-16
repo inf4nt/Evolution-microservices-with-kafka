@@ -23,9 +23,9 @@ public class MessageStateEvent implements MessageEvent {
 
     String text;
 
-    User sender;
+    String sender;
 
-    User recipient;
+    String recipient;
 
     Date postDate;
 

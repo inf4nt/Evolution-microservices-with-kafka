@@ -106,4 +106,34 @@ public class MessageEventBuilder {
                 .isRead(message.isRead())
                 .build();
     }
+
+
+
+
+
+
+
+    public static MessageDenormalizationStateEvent buildForSender(MessageCreateEvent message, UserStateEvent user) {
+        User sender = new User();
+        sender.setId(user.getId());
+        sender.setFirstName(user.getFirstName());
+        sender.setLastName(user.getLastName());
+        sender.setNickname(user.getNickname());
+
+        return MessageDenormalizationStateEvent
+                .builder()
+                .id(message.getId())
+                .superId(message.getSuperId())
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
+                .sender(sender)
+                .text(message.getText())
+                .postDate(message.getPostDate())
+                .putDate(message.getPostDate())
+                .isRead(false)
+                .build();
+    }
+
+
+
+
 }

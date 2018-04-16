@@ -18,6 +18,8 @@ public class MessageCreateEvent {
 
     String id;
 
+    String superId;
+
     String eventId;
 
     String text;

@@ -11,10 +11,16 @@ public interface MessageStateKProcessor {
     @Input(INPUT_MESSAGE_CREATE)
     KStream<?, ?> inputMessageCreate();
 
-    String INPUT_MESSAGE_UPDATE_TEXT = "input-message-update-text";
+//    String INPUT_MESSAGE_UPDATE_TEXT = "input-message-update-text";
+//
+//    @Input(INPUT_MESSAGE_UPDATE_TEXT)
+//    KStream<?, ?> inputMessageUpdateText();
 
-    @Input(INPUT_MESSAGE_UPDATE_TEXT)
-    KStream<?, ?> inputMessageUpdateText();
+
+    String INPUT_USER_STATE = "input-user-state";
+
+    @Input(INPUT_USER_STATE)
+    KStream<?, ?> inputUserState();
 
     String OUTPUT_MESSAGE_STATE = "output-message-state";
 

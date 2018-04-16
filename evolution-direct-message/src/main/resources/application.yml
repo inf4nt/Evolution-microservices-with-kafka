@@ -1,3 +1,5 @@
+#spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
+
 spring:
   application:
     name: 'evolution-direct-message'
@@ -11,23 +13,19 @@ spring:
   cloud:
     stream:
       bindings:
-#        input-create-message:
-#          destination: CreateMessageEventTopic
-#        input-update-text-message:
-#          destination: UpdateMessageTextEventTopic
-#        output-state-message:
-#          destination: MessageStateEventTopic
+        input-message-create:
+          destination: MessageCreateEventTopic
+        input-message-update-text:
+          destination: MessageUpdateTextEventTopic
+        output-message-state:
+          destination: MessageStateEventTopic
         input:
           destination: MessageStateEventTopic
-#        other channel
-#        input-state-user:
-#          destination: UserStateEventTopic
       kafka:
         streams:
           binder:
             applicationId: 'evolution-direct-message'
             configuration:
-                commit.interval.ms: 1000
                 default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
                 default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
 server:
