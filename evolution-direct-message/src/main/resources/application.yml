@@ -8,6 +8,7 @@ spring:
     bootstrap-servers: 'localhost:9092'
     consumer:
       auto-offset-reset: earliest
+      group-id: 'evolution-message'
   data:
     rest:
       base-path: '/state'

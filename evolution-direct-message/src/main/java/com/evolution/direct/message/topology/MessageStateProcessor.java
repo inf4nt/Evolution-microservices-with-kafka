@@ -25,7 +25,7 @@ public class MessageStateProcessor extends AbstractProcessor {
     private ObjectMapper objectMapper;
 
     public MessageStateProcessor() {
-        super(MessageStateProcessor.class.getSimpleName(), MessageStateProcessor.class.getSimpleName() + "Group");
+        super(MessageStateProcessor.class.getSimpleName());
     }
 
     @PostConstruct

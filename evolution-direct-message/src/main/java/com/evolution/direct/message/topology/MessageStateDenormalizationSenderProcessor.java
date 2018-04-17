@@ -26,7 +26,7 @@ public class MessageStateDenormalizationSenderProcessor extends AbstractProcesso
     private ObjectMapper objectMapper;
 
     public MessageStateDenormalizationSenderProcessor() {
-        super(MessageStateDenormalizationSenderProcessor.class.getSimpleName(), MessageStateDenormalizationSenderProcessor.class.getSimpleName() + "Group");
+        super(MessageStateDenormalizationSenderProcessor.class.getSimpleName());
     }
 
     @PostConstruct
@@ -48,7 +48,10 @@ public class MessageStateDenormalizationSenderProcessor extends AbstractProcesso
         KStream<String, MessageDenormalizationStateEvent> sender = stateMessageStream
                 .selectKey((k, v) -> v.getSender())
                 .join(userStateEventStream, (ms, u) -> MessageEventBuilder.buildStateForSender(ms, u),
-                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), serdeMessageState, serdeUserState);
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), serdeMessageState, serdeUserState)
+                .selectKey((k, v) -> v.getRecipient().getId())
+                .join(userStateEventStream, (md, u) -> MessageEventBuilder.buildStateForRecipient2(md, u),
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), serdeMessageDenormalizationState, serdeUserState);
 
         sender.to(Serdes.String(), serdeMessageDenormalizationState, "MessageDenormalizationStateEventTopic");
 
