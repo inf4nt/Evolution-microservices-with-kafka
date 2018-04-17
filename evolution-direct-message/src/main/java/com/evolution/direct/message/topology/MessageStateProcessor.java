@@ -1,7 +1,6 @@
 package com.evolution.direct.message.topology;
 
 import com.evolution.direct.message.event.MessageCreateEvent;
-import com.evolution.direct.message.event.MessageStateEvent;
 import com.evolution.direct.message.event.MessageUpdateTextEvent;
 import com.evolution.direct.message.service.MessageEventBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,12 +33,11 @@ public class MessageStateProcessor extends AbstractProcessor {
         StreamsBuilder builder = new StreamsBuilder();
         Serde<MessageCreateEvent> serdeCreate = new JsonSerde<>(MessageCreateEvent.class, objectMapper);
         Serde<MessageUpdateTextEvent> serdeUpdateText = new JsonSerde<>(MessageUpdateTextEvent.class, objectMapper);
-        Serde<MessageStateEvent> serdeMessageState = new JsonSerde<>(MessageStateEvent.class, objectMapper);
 
-        KStream<String, MessageCreateEvent> createStream = builder.stream("MessageCreateEventTopic", Consumed.with(Serdes.String(), serdeCreate));
-        KStream<String, MessageUpdateTextEvent> updateTextStream = builder.stream("MessageUpdateTextEventTopic", Consumed.with(Serdes.String(), serdeUpdateText));
+        KStream<String, MessageCreateEvent> createStream = builder.stream(MessageCreateEvent.class.getSimpleName() + "Topic", Consumed.with(Serdes.String(), serdeCreate));
+        KStream<String, MessageUpdateTextEvent> updateTextStream = builder.stream(MessageUpdateTextEvent.class.getSimpleName() + "Topic", Consumed.with(Serdes.String(), serdeUpdateText));
 
-        createStream.leftJoin(updateTextStream, (c, u) -> MessageEventBuilder.build(c, u), JoinWindows.of(500))
+        createStream.leftJoin(updateTextStream, (c, u) -> MessageEventBuilder.build(c, u), JoinWindows.of(50000))
                 .to("MessageStateEventTopic");
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());

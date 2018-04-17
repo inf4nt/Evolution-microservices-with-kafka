@@ -1,5 +1,6 @@
 package com.evolution.direct.message.event;
 
+import com.evolution.direct.message.event.MessageEvent;
 import com.evolution.direct.message.share.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

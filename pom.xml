@@ -13,9 +13,7 @@
 
 	<modules>
 		<module>evolution-user</module>
-		<module>evolution-user-processor</module>
 		<module>evolution-direct-message</module>
-		<module>evolution-direct-message-processor</module>
 	</modules>
 
 </project>

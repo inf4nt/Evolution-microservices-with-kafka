@@ -15,7 +15,7 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class MessageDenormalizationStateEvent {
+public class MessageDenormalizationStateEvent implements MessageEvent {
 
     String id;
 

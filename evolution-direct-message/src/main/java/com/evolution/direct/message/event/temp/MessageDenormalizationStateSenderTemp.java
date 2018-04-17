@@ -1,5 +1,6 @@
-package com.evolution.user.processor.event;
+package com.evolution.direct.message.event.temp;
 
+import com.evolution.direct.message.share.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -14,23 +15,21 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class UserStateEvent implements UserEvent {
+public class MessageDenormalizationStateSenderTemp {
 
     String id;
 
     String eventId;
 
-    String username;
+    String text;
 
-    String password;
+    User sender;
 
-    String firstName;
+    String recipient;
 
-    String lastName;
+    Date postDate;
 
-    String nickname;
+    Date putDate;
 
-    Date datePost;
-
-    Date datePut;
+    boolean isRead;
 }
