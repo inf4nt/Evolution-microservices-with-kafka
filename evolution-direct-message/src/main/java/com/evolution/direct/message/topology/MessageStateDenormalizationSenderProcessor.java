@@ -3,12 +3,15 @@ package com.evolution.direct.message.topology;
 import com.evolution.direct.message.event.MessageDenormalizationStateEvent;
 import com.evolution.direct.message.event.MessageStateEvent;
 import com.evolution.direct.message.event.UserStateEvent;
+import com.evolution.direct.message.event.temp.MessageDenormalizationStateSender;
+import com.evolution.direct.message.event.temp.MessageDenormalizationStateSenderAndRecipient;
 import com.evolution.direct.message.service.MessageEventBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.Consumed;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.JoinWindows;
 import org.apache.kafka.streams.kstream.KStream;
@@ -35,6 +38,9 @@ public class MessageStateDenormalizationSenderProcessor extends AbstractProcesso
         Serde<UserStateEvent> serdeUserState = new JsonSerde<>(UserStateEvent.class, objectMapper);
         Serde<MessageStateEvent> serdeMessageState = new JsonSerde<>(MessageStateEvent.class, objectMapper);
 
+        Serde<MessageDenormalizationStateSender> serderMessageDenormalizationStateSender =
+                new JsonSerde<>(MessageDenormalizationStateSender.class, objectMapper);
+
         Serde<MessageDenormalizationStateEvent> serdeMessageDenormalizationState = new JsonSerde<>(MessageDenormalizationStateEvent.class, objectMapper);
 
         StreamsBuilder builder = new StreamsBuilder();
@@ -44,14 +50,15 @@ public class MessageStateDenormalizationSenderProcessor extends AbstractProcesso
 
         KStream<String, UserStateEvent> userStateEventStream = builder.stream("UserStateEventTopic", Consumed.with(Serdes.String(), serdeUserState));
 
-
         KStream<String, MessageDenormalizationStateEvent> sender = stateMessageStream
                 .selectKey((k, v) -> v.getSender())
-                .join(userStateEventStream, (ms, u) -> MessageEventBuilder.buildStateForSender(ms, u),
+                .join(userStateEventStream, (ms, u) -> MessageEventBuilder.build(ms, u),
                         JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), serdeMessageState, serdeUserState)
-                .selectKey((k, v) -> v.getRecipient().getId())
-                .join(userStateEventStream, (md, u) -> MessageEventBuilder.buildStateForRecipient2(md, u),
-                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), serdeMessageDenormalizationState, serdeUserState);
+                .selectKey((k, v) -> v.getRecipient())
+                .join(userStateEventStream, (md, u) -> MessageEventBuilder.build(md, u),
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)), Serdes.String(), serderMessageDenormalizationStateSender, serdeUserState)
+                .map((k, v) -> new KeyValue<>(k, MessageEventBuilder.build(v)));
+
 
         sender.to(Serdes.String(), serdeMessageDenormalizationState, "MessageDenormalizationStateEventTopic");
 
