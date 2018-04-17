@@ -32,6 +32,5 @@ public class MessageDenormalizationStateEvent {
     Date putDate;
 
     boolean isRead;
-
 }
 

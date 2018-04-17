@@ -7,6 +7,22 @@ import java.util.UUID;
 
 public class MessageEventBuilder {
 
+    public static MessageDenormalizationStateEvent build(MessageDenormalizationStateEvent s, MessageDenormalizationStateEvent r) {
+        return MessageDenormalizationStateEvent.builder()
+                .id(s.getId())
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
+                .text(s.getText())
+                .sender(s.getSender())
+
+                .recipient(r.getRecipient())
+
+                .postDate(s.getPostDate())
+                .putDate(s.getPutDate())
+                .isRead(s.isRead())
+
+                .build();
+    }
+
     public static MessageStateEvent build(MessageCreateEvent createEvent, MessageUpdateTextEvent updateTextEvent) {
         return MessageStateEvent.builder()
                 .id(createEvent.getId())
@@ -20,15 +36,46 @@ public class MessageEventBuilder {
     }
 
     public static MessageDenormalizationStateEvent buildStateForSender(MessageStateEvent messageTempStateEvent, UserStateEvent userStateEvent) {
+        User recipient = new User();
+        recipient.setId(messageTempStateEvent.getRecipient());
+
         return MessageDenormalizationStateEvent
                 .builder()
                 .id(messageTempStateEvent.getId())
                 .text(messageTempStateEvent.getText())
+                .recipient(recipient)
                 .sender(new User(userStateEvent.getId(), userStateEvent.getFirstName(), userStateEvent.getLastName(), userStateEvent.getNickname()))
                 .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
                 .isRead(messageTempStateEvent.isRead())
                 .postDate(messageTempStateEvent.getPostDate())
                 .putDate(messageTempStateEvent.getPutDate())
+                .build();
+    }
+
+    public static MessageDenormalizationStateEvent buildStateForRecipient(MessageStateEvent messageTempStateEvent, UserStateEvent userStateEvent) {
+        return MessageDenormalizationStateEvent
+                .builder()
+                .id(messageTempStateEvent.getId())
+                .text(messageTempStateEvent.getText())
+                .recipient(new User(userStateEvent.getId(), userStateEvent.getFirstName(), userStateEvent.getLastName(), userStateEvent.getNickname()))
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
+                .isRead(messageTempStateEvent.isRead())
+                .postDate(messageTempStateEvent.getPostDate())
+                .putDate(messageTempStateEvent.getPutDate())
+                .build();
+    }
+
+    public static MessageDenormalizationStateEvent buildStateForRecipient2(MessageDenormalizationStateEvent messageDenormalizationStateEvent, UserStateEvent userStateEvent) {
+        return MessageDenormalizationStateEvent
+                .builder()
+                .id(messageDenormalizationStateEvent.getId())
+                .text(messageDenormalizationStateEvent.getText())
+                .sender(messageDenormalizationStateEvent.getSender())
+                .recipient(new User(userStateEvent.getId(), userStateEvent.getFirstName(), userStateEvent.getLastName(), userStateEvent.getNickname()))
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
+                .isRead(messageDenormalizationStateEvent.isRead())
+                .postDate(messageDenormalizationStateEvent.getPostDate())
+                .putDate(messageDenormalizationStateEvent.getPutDate())
                 .build();
     }
 

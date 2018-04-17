@@ -18,12 +18,12 @@ spring:
           destination: MessageCreateEventTopic
         input-message-update-text:
           destination: MessageUpdateTextEventTopic
-#        output-message-state:
-#          destination: MessageStateEventTopic
+        output-message-state:
+          destination: MessageStateEventTopic
         input:
           destination: MessageStateEventTopic
-#        input-message-state:
-#          destination: MessageStateEventTopic
+        input-message-state:
+          destination: MessageStateEventTopic
         input-user-state:
           destination: UserStateEventTopic
         output-message-denormalization-state:
