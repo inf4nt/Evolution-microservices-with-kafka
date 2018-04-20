@@ -1,0 +1,15 @@
+spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
+
+
+spring:
+  application:
+    name: 'evolution-msp-user'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
+  data:
+    rest:
+      base-path: '/state'
+server:
+  port: 8381
