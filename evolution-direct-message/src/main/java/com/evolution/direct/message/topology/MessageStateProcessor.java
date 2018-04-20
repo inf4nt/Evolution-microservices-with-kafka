@@ -1,6 +1,7 @@
 package com.evolution.direct.message.topology;
 
 import com.evolution.direct.message.event.MessageCreateEvent;
+import com.evolution.direct.message.event.MessageStateEvent;
 import com.evolution.direct.message.event.MessageUpdateTextEvent;
 import com.evolution.direct.message.service.MessageEventBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class MessageStateProcessor extends AbstractProcessor {
@@ -37,11 +39,11 @@ public class MessageStateProcessor extends AbstractProcessor {
         KStream<String, MessageCreateEvent> createStream = builder.stream(MessageCreateEvent.class.getSimpleName() + "Topic", Consumed.with(Serdes.String(), serdeCreate));
         KStream<String, MessageUpdateTextEvent> updateTextStream = builder.stream(MessageUpdateTextEvent.class.getSimpleName() + "Topic", Consumed.with(Serdes.String(), serdeUpdateText));
 
-        createStream.leftJoin(updateTextStream, (c, u) -> MessageEventBuilder.build(c, u), JoinWindows.of(50000))
-                .to("MessageStateEventTopic");
+        createStream.leftJoin(updateTextStream, (c, u) -> MessageEventBuilder.build(c, u), JoinWindows.of(TimeUnit.MINUTES.toMillis(10)))
+                .to(MessageStateEvent.class.getSimpleName() + "Topic");
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
         streams.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+//        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
 }

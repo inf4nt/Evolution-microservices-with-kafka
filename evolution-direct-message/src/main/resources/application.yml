@@ -14,12 +14,14 @@ spring:
   cloud:
     stream:
       bindings:
-        input:
+        input-message-state:
+          destination: MessageStateEventTopic
+        input-message-state-denormalizate:
           destination: MessageDenormalizationStateEventTopic
       kafka:
         streams:
           binder:
-            applicationId: 'evolution-direct-message'
+#            applicationId: 'evolution-direct-message'
             configuration:
                 default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
                 default.value.serde: org.springframework.kafka.support.serializer.JsonSerde

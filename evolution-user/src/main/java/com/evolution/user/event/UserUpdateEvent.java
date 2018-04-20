@@ -1,5 +1,6 @@
 package com.evolution.user.event;
 
+import com.evolution.user.kafka.core.Event;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -14,15 +15,15 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class UserUpdateEvent implements UserEvent {
+public class UserUpdateEvent implements Event<String> {
 
     String id;
 
     String eventId;
 
-    String username;
-
-    String password;
+//    String username;
+//
+//    String password;
 
     String firstName;
 
@@ -31,4 +32,6 @@ public class UserUpdateEvent implements UserEvent {
     String nickname;
 
     Date datePut;
+
+//    Date postDate;
 }

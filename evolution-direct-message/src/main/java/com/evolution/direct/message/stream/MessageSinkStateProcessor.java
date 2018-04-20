@@ -1,6 +1,7 @@
 package com.evolution.direct.message.stream;
 
 import com.evolution.direct.message.event.MessageDenormalizationStateEvent;
+import com.evolution.direct.message.event.MessageStateEvent;
 import com.evolution.direct.message.layer.query.model.Message;
 import com.evolution.direct.message.layer.query.repository.MessageRepository;
 import org.slf4j.Logger;
@@ -9,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.messaging.SubscribableChannel;
 
 import java.util.Optional;
 
-@EnableBinding({Sink.class})
+@EnableBinding({MessageSink.class})
 public class MessageSinkStateProcessor {
 
     private final static Logger logger = LoggerFactory.getLogger(MessageSinkStateProcessor.class);
@@ -20,7 +22,12 @@ public class MessageSinkStateProcessor {
     @Autowired
     private MessageRepository messageRepository;
 
-    @StreamListener(Sink.INPUT)
+    @StreamListener(MessageSink.INPUT_MESSAGE_STATE)
+    public void sinkState(MessageStateEvent event) {
+        logger.info("Catch MessageStateEvent:" + event);
+    }
+
+    @StreamListener(MessageSink.INPUT_MESSAGE_STATE_DENORMALIZATE)
     public void processState(MessageDenormalizationStateEvent event) {
         logger.info("Catch MessageDenormalizationStateEvent:" + event);
 

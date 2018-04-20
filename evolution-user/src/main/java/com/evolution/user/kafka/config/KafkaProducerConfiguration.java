@@ -1,6 +1,6 @@
-package com.evolution.user.kafka;
+package com.evolution.user.kafka.config;
 
-import com.evolution.user.event.UserEvent;
+import com.evolution.user.kafka.core.Event;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,12 +29,12 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, UserEvent> producerFactory() {
+    public ProducerFactory<String, Event> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, UserEvent> kafkaTemplate() {
+    public KafkaTemplate<String, Event> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

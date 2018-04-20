@@ -1,5 +1,6 @@
 package com.evolution.user.event;
 
+import com.evolution.user.kafka.core.Event;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -14,7 +15,7 @@ import java.util.Date;
 @ToString
 @Builder
 @Wither
-public class UserStateEvent implements UserEvent {
+public class UserStateEvent implements Event<String> {
 
     String id;
 

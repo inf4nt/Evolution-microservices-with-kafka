@@ -11,17 +11,17 @@ spring:
     stream:
       bindings:
         input-create-user:
-          destination: UserCreateEventTopic
+          destination: UserCreateEventFeed
         input-update-user:
-          destination: UserUpdateEventTopic
+          destination: UserUpdateEventFeed
         output-state-user:
-          destination: UserStateEventTopic
+          destination: UserStateEventFeed
         input:
-          destination: UserStateEventTopic
+          destination: UserStateEventFeed
       kafka:
         streams:
           binder:
-            applicationId: 'evolution-user'
+            applicationId: 'evolution-user-1'
             configuration:
               default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
               default.value.serde: org.springframework.kafka.support.serializer.JsonSerde

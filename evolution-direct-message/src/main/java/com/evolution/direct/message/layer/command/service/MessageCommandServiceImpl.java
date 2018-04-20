@@ -2,7 +2,9 @@ package com.evolution.direct.message.layer.command.service;
 
 import com.evolution.direct.message.event.MessageCreateEvent;
 import com.evolution.direct.message.event.MessageEvent;
+import com.evolution.direct.message.event.MessageUpdateTextEvent;
 import com.evolution.direct.message.layer.command.dto.MessageCreateRequestDTO;
+import com.evolution.direct.message.layer.command.dto.MessageUpdateTextRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,18 @@ public class MessageCommandServiceImpl implements MessageCommandService {
                 .sender(requestDTO.getSender())
                 .recipient(requestDTO.getRecipient())
                 .postDate(new Date())
+                .build();
+
+        kafkaTemplate.send(event.getTopic(), event.getId(), event);
+    }
+
+    @Override
+    public void putMessage(MessageUpdateTextRequestDTO request) {
+        MessageUpdateTextEvent event = MessageUpdateTextEvent.builder()
+                .id(request.getId())
+                .eventId(UUID.randomUUID().toString().replaceAll("-", ""))
+                .text(request.getText())
+                .putDate(new Date())
                 .build();
 
         kafkaTemplate.send(event.getTopic(), event.getId(), event);

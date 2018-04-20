@@ -19,6 +19,7 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class MessageStateDenormalizationProcessor extends AbstractProcessor {
@@ -49,16 +50,16 @@ public class MessageStateDenormalizationProcessor extends AbstractProcessor {
         KStream<String, MessageDenormalizationStateEvent> sender = stateMessageStream
                 .selectKey((k, v) -> v.getSender())
                 .join(userStateEventStream, (ms, u) -> MessageEventBuilder.build(ms, u),
-                        JoinWindows.of(50000), Serdes.String(), serdeMessageState, serdeUserState)
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(10)), Serdes.String(), serdeMessageState, serdeUserState)
                 .selectKey((k, v) -> v.getRecipient())
                 .join(userStateEventStream, (md, u) -> MessageEventBuilder.build(md, u),
-                        JoinWindows.of(50000), Serdes.String(), serderMessageDenormalizationStateSender, serdeUserState)
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(10)), Serdes.String(), serderMessageDenormalizationStateSender, serdeUserState)
                 .map((k, v) -> new KeyValue<>(k, MessageEventBuilder.build(v)));
 
         sender.to(Serdes.String(), serdeMessageDenormalizationState, MessageDenormalizationStateEvent.class.getSimpleName() + "Topic");
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
         streams.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+//        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
 }

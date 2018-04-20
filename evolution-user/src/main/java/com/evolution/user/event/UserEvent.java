@@ -1,8 +1,39 @@
 package com.evolution.user.event;
 
-public interface UserEvent {
+import com.evolution.user.kafka.core.Event;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.Wither;
 
-    default String getTopic() {
-        return this.getClass().getSimpleName() + "Topic";
-    }
+import java.util.Date;
+
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Builder
+@Wither
+public class UserEvent implements Event<String> {
+
+    String id;
+
+    String eventId;
+
+    String username;
+
+    String password;
+
+    String firstName;
+
+    String lastName;
+
+    String nickname;
+
+    Date datePost;
+
+    Date datePut;
+
+    boolean isCreateEvent;
 }
