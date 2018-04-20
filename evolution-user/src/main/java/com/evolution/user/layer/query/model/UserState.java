@@ -22,7 +22,7 @@ public class UserState {
     @Indexed(unique = true)
     String eventId;
 
-    @Indexed(unique = true)
+//    @Indexed(unique = true)
     String username;
 
     String password;
