@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: 'evolution-user'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: UserStateFeed
+server:
+  port: 8181
