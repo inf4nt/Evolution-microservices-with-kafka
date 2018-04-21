@@ -1,17 +1,17 @@
 spring:
   application:
-    name: 'evolution-user'
+    name: 'evolution-direct-message'
   kafka:
     bootstrap-servers: 'localhost:9092'
     consumer:
       auto-offset-reset: earliest
+  data:
+    rest:
+      base-path: '/state'
   cloud:
     stream:
       bindings:
         input:
-          destination: UserStateFeed
-  data:
-    rest:
-      base-path: '/state'
+          destination: MessageStateFeed
 server:
-  port: 8181
+  port: 8381
