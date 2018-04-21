@@ -11,5 +11,10 @@ spring:
   data:
     rest:
       base-path: '/state'
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: UserStateFeed
 server:
   port: 8381
