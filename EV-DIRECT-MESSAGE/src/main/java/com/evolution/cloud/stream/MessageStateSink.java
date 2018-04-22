@@ -30,6 +30,7 @@ public class MessageStateSink {
             message = or.get();
         }
 
+        message.setKey(state.getKey());
         message.setText(state.getText());
         message.setEventNumber(state.getEventNumber());
         message.setSender(state.getSender());
