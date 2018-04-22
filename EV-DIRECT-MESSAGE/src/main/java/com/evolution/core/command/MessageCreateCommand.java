@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -15,11 +17,15 @@ import lombok.experimental.Wither;
 @Wither
 public class MessageCreateCommand implements Base<String> {
 
+    @NotEmpty
     String key;
 
+    @NotEmpty
     String text;
 
+    @NotEmpty
     String sender;
 
+    @NotEmpty
     String recipient;
 }

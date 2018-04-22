@@ -12,6 +12,6 @@ spring:
     stream:
       bindings:
         input:
-          destination: MessageStateFeed
+          destination: MessageDenormalizationStateFeed
 server:
   port: 8381

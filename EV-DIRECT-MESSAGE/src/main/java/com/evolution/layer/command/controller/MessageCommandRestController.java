@@ -6,6 +6,8 @@ import com.evolution.layer.command.service.MessageServiceCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/command")
 public class MessageCommandRestController {
@@ -14,12 +16,12 @@ public class MessageCommandRestController {
     private MessageServiceCommand messageServiceCommand;
 
     @PostMapping
-    public void post(@RequestBody MessageCreateRequestDTO requestDTO) {
+    public void post(@Valid @RequestBody MessageCreateRequestDTO requestDTO) {
         messageServiceCommand.postMessage(requestDTO);
     }
 
     @PutMapping
-    public void put(@RequestBody MessageUpdateTextRequestDTO requestDTO) {
+    public void put(@Valid @RequestBody MessageUpdateTextRequestDTO requestDTO) {
         messageServiceCommand.putText(requestDTO);
     }
 }

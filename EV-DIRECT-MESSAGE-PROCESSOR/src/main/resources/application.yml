@@ -3,5 +3,7 @@ spring:
     name: 'evolution-direct-message-processor'
   kafka:
     bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
 server:
   port: 8282

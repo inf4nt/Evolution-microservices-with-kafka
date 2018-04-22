@@ -1,7 +1,6 @@
 package com.evolution.core.state;
 
 import com.evolution.core.base.State;
-import com.evolution.core.share.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -22,7 +21,7 @@ public class MessageState implements State<String, String> {
 
     String text;
 
-    User sender;
+    String sender;
 
-    User recipient;
+    String recipient;
 }

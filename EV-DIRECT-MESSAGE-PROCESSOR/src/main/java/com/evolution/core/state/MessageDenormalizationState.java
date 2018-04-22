@@ -1,11 +1,10 @@
-package com.evolution.core.command;
+package com.evolution.core.state;
 
-import com.evolution.core.base.Base;
+import com.evolution.core.base.State;
+import com.evolution.core.share.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
-
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -15,11 +14,15 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class MessageUpdateTextCommand implements Base<String> {
+public class MessageDenormalizationState implements State<String, String> {
 
-    @NotEmpty
     String key;
 
-    @NotEmpty
+    String eventNumber;
+
     String text;
+
+    User sender;
+
+    User recipient;
 }

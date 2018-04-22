@@ -1,5 +1,6 @@
 package com.evolution.cloud.stream;
 
+import com.evolution.core.state.MessageDenormalizationState;
 import com.evolution.core.state.MessageState;
 import com.evolution.layer.query.model.MessageModel;
 import com.evolution.layer.query.repository.MessageRepository;
@@ -21,8 +22,8 @@ public class MessageStateSink {
     private MessageRepository messageRepository;
 
     @StreamListener(Sink.INPUT)
-    public void stateSink(MessageState state) {
-        logger.info("Catch message state:" + state);
+    public void stateDenormalizationSink(MessageDenormalizationState state) {
+        logger.info("Catch message denormalization state:" + state);
 
         MessageModel message = new MessageModel();
         Optional<MessageModel> or = messageRepository.findById(state.getKey());
@@ -38,4 +39,9 @@ public class MessageStateSink {
 
         messageRepository.save(message);
     }
+
+//    @StreamListener(Sink.INPUT)
+//    public void stateSink(MessageState state) {
+//        logger.info("Catch message state:" + state);
+//    }
 }

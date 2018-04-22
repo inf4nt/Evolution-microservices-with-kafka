@@ -18,11 +18,11 @@ public class FakeUserProducer {
     @Autowired
     private KafkaTemplate<String, Base<String>> kafkaTemplate;
 
-    private static final String key = UUID.randomUUID().toString().replace("-", "");
+    private static final String key = "1111";
 
-    private static final String key2 = UUID.randomUUID().toString().replace("-", "");
+    private static final String key2 = "2222";
 
-    private static final String key3 = UUID.randomUUID().toString().replace("-", "");
+    private static final String key3 = "3333";
 
     @PostConstruct
     public void init() {
