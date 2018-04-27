@@ -55,7 +55,6 @@ public class UserStateTopology extends AbstractTopology {
                         .build()))
                 .to(getFeed(UserState.class), Produced.with(Serdes.String(), userStateSerde));
 
-
         final KStream<String, UserUpdateUsernameCommand> userUpdateUsernameCommandKStream = builder
                 .stream(getFeed(UserUpdateUsernameCommand.class), Consumed.with(Serdes.String(), updateUsernameCommandSerde));
 

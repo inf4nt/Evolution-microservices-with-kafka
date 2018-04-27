@@ -44,11 +44,12 @@
 //        Serde<MessageState> messageStateSerde = new JsonSerde<>(MessageState.class, objectMapper);
 //        Serde<MessageDenormalizationState> messageDenormalizationStateSerde = new JsonSerde<>(MessageDenormalizationState.class, objectMapper);
 //
-//        final KTable<String, MessageState> stateMessageKTable = builder.table(getFeed(MessageState.class), Consumed.with(Serdes.String(), messageStateSerde));
-//
 //        final KStream<String, UserState> userStateKStream = builder.stream(getFeed(UserState.class), Consumed.with(Serdes.String(), userStateSerde));
+//        final KTable<String, MessageDenormalizationState> messageDenormalizationStateKTable = builder
+//                .table(getFeed(MessageDenormalizationState.class), Consumed.with(Serdes.String(), messageDenormalizationStateSerde));
 //
-//        final KStream<String, MessageDenormalizationState> messageDenormalizationStateKStream = stateMessageKTable
+//
+//        messageDenormalizationStateKTable
 //                .toStream()
 //                .selectKey((k, v) -> v.getSender())
 //                .join(userStateKStream, (m, us) -> MessageStateSenderTemp.builder()
@@ -57,7 +58,7 @@
 //                                .sender(new User(us.getKey(), us.getFirstName(), us.getLastName()))
 //                                .recipient(m.getRecipient())
 //                                .build(),
-//                        JoinWindows.of(TimeUnit.MINUTES.toMillis(1)), Joined.with(Serdes.String(), messageStateSerde, userStateSerde))
+//                        JoinWindows.of(TimeUnit.MINUTES.toMillis(1)), Joined.with(Serdes.String(), messageDenormalizationStateSerde, userStateSerde))
 //                .selectKey((k, v) -> v.getRecipient())
 //                .join(userStateKStream, (m, us) -> MessageDenormalizationState.builder()
 //                                .key(m.getKey())
@@ -66,9 +67,8 @@
 //                                .sender(m.getSender())
 //                                .recipient(new User(us.getKey(), us.getFirstName(), us.getLastName()))
 //                                .build(),
-//                        JoinWindows.of(TimeUnit.MINUTES.toMillis(1)), Joined.with(Serdes.String(), messageStateSenderSerde, userStateSerde));
-//
-//        messageDenormalizationStateKStream.to(getFeed(MessageDenormalizationState.class), Produced.with(Serdes.String(), messageDenormalizationStateSerde));
+//                        JoinWindows.of(TimeUnit.MINUTES.toMillis(1)), Joined.with(Serdes.String(), messageStateSenderSerde, userStateSerde))
+//                .to(getFeed(MessageDenormalizationState.class), Produced.with(Serdes.String(), messageDenormalizationStateSerde));
 //
 //        KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
 //        streams.start();

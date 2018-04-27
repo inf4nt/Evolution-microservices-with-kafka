@@ -59,32 +59,32 @@ public class FakeUserProducer {
         kafkaTemplate.send(command2.getFeed(), command2.getKey(), command2);
         kafkaTemplate.send(command3.getFeed(), command3.getKey(), command3);
     }
-
-
-    @Scheduled(fixedDelay = 30000)
-    public void produce() {
-        UserUpdateUsernameCommand command = UserUpdateUsernameCommand
-                .builder()
-                .key(key)
-                .username("lukaretskiy" + new Date())
-                .build();
-
-        kafkaTemplate.send(command.getFeed(), command.getKey(), command);
-
-        UserUpdateUsernameCommand command2 = UserUpdateUsernameCommand
-                .builder()
-                .key(key2)
-                .username("berberyan" + new Date())
-                .build();
-
-        kafkaTemplate.send(command2.getFeed(), command2.getKey(), command2);
-
-        UserUpdateUsernameCommand command3 = UserUpdateUsernameCommand
-                .builder()
-                .key(key3)
-                .username("melnichuk" + new Date())
-                .build();
-
-        kafkaTemplate.send(command3.getFeed(), command3.getKey(), command3);
-    }
+//
+//
+//    @Scheduled(fixedDelay = 30000)
+//    public void produce() {
+//        UserUpdateUsernameCommand command = UserUpdateUsernameCommand
+//                .builder()
+//                .key(key)
+//                .username("lukaretskiy" + new Date())
+//                .build();
+//
+//        kafkaTemplate.send(command.getFeed(), command.getKey(), command);
+//
+//        UserUpdateUsernameCommand command2 = UserUpdateUsernameCommand
+//                .builder()
+//                .key(key2)
+//                .username("berberyan" + new Date())
+//                .build();
+//
+//        kafkaTemplate.send(command2.getFeed(), command2.getKey(), command2);
+//
+//        UserUpdateUsernameCommand command3 = UserUpdateUsernameCommand
+//                .builder()
+//                .key(key3)
+//                .username("melnichuk" + new Date())
+//                .build();
+//
+//        kafkaTemplate.send(command3.getFeed(), command3.getKey(), command3);
+//    }
 }
