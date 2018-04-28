@@ -5,7 +5,7 @@ import com.evolution.user.base.core.command.validation.UserCreateCommandValidati
 import com.evolution.user.base.core.common.CommandErrors;
 import com.evolution.user.core.AbstractTopology;
 import com.evolution.user.topology.core.UserCreateEvent;
-import com.evolution.user.topology.core.UserStateKeyUsername;
+import com.evolution.user.topology.core.UserUsernameKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -43,13 +43,13 @@ public class UserValidationCommandTopology extends AbstractTopology {
         Serde<UserCreateEvent> userCreateEventSerde = new JsonSerde<>(UserCreateEvent.class, objectMapper);
         Serde<UserCreateCommandValidationResponse> userCreateCommandValidationResponseSerde = new JsonSerde<>(UserCreateCommandValidationResponse.class, objectMapper);
         Serde<UserCreateCommand> userCreateCommandSerde = new JsonSerde<>(UserCreateCommand.class, objectMapper);
-        Serde<UserStateKeyUsername> userStateKeyUsernameSerde = new JsonSerde<>(UserStateKeyUsername.class, objectMapper);
+        Serde<UserUsernameKey> userStateKeyUsernameSerde = new JsonSerde<>(UserUsernameKey.class, objectMapper);
 
         final KStream<String, UserCreateCommand> userCreateCommandKStream = builder
                 .stream(getFeed(UserCreateCommand.class), Consumed.with(Serdes.String(), userCreateCommandSerde));
 
-        final KTable<String, UserStateKeyUsername> userStateKeyUsernameKTable = builder
-                .table(getFeed(UserStateKeyUsername.class), Consumed.with(Serdes.String(), userStateKeyUsernameSerde));
+        final KTable<String, UserUsernameKey> userStateKeyUsernameKTable = builder
+                .table(getFeed(UserUsernameKey.class), Consumed.with(Serdes.String(), userStateKeyUsernameSerde));
 
         final KStream<String, UserCreateCommandValidationResponse> userCreateCommandValidationResponseKStream =
                 userCreateCommandKStream

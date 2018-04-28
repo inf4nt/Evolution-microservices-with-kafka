@@ -1,7 +1,7 @@
 package com.evolution.user.topology.core;
 
 
-import com.evolution.user.base.core.state.IUserState;
+import com.evolution.user.core.Base;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -16,23 +16,11 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserStateKeyUsername implements IUserState {
+public class UserUsernameKey implements Base<String> {
 
     @NotEmpty
     String key;
 
     @NotEmpty
-    String eventNumber;
-
-    @NotEmpty
     String username;
-
-    @NotEmpty
-    String password;
-
-    @NotEmpty
-    String firstName;
-
-    @NotEmpty
-    String lastName;
 }

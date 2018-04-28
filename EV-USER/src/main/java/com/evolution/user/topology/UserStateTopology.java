@@ -4,7 +4,7 @@ package com.evolution.user.topology;
 import com.evolution.user.base.core.state.UserState;
 import com.evolution.user.core.AbstractTopology;
 import com.evolution.user.topology.core.UserCreateEvent;
-import com.evolution.user.topology.core.UserStateKeyUsername;
+import com.evolution.user.topology.core.UserUsernameKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -38,10 +38,15 @@ public class UserStateTopology extends AbstractTopology {
 
         Serde<UserState> userStateSerde = new JsonSerde<>(UserState.class, objectMapper);
         Serde<UserCreateEvent> userCreateEventSerde = new JsonSerde<>(UserCreateEvent.class, objectMapper);
-        Serde<UserStateKeyUsername> userStateKeyUsernameSerde = new JsonSerde<>(UserStateKeyUsername.class, objectMapper);
+        Serde<UserUsernameKey> userStateKeyUsernameSerde = new JsonSerde<>(UserUsernameKey.class, objectMapper);
 
         final KStream<String, UserCreateEvent> userCreateEventKStream = builder
                 .stream(getFeed(UserCreateEvent.class), Consumed.with(Serdes.String(), userCreateEventSerde));
+
+        final KStream<String, UserUsernameKey> userUsernameKeyKStream =
+                userCreateEventKStream.map((k, v) -> new KeyValue<>(v.getUserCreateCommand().getUsername(), UserUsernameKey.builder().build()));
+
+        userUsernameKeyKStream.to(getFeed(UserUsernameKey.class), Produced.with(Serdes.String(), userStateKeyUsernameSerde));
 
         final KStream<String, UserState> userStateKStream = userCreateEventKStream
                 .map((k, v) -> new KeyValue<>(k, UserState.builder()
@@ -54,19 +59,6 @@ public class UserStateTopology extends AbstractTopology {
                         .build()));
 
         userStateKStream.to(getFeed(UserState.class), Produced.with(Serdes.String(), userStateSerde));
-
-
-        final KStream<String, UserStateKeyUsername> userStateKeyUsernameKStream = userStateKStream
-                .map((k, v) -> new KeyValue<>(v.getUsername(), UserStateKeyUsername.builder()
-                        .key(v.getKey())
-                        .eventNumber(v.getEventNumber())
-                        .username(v.getUsername())
-                        .password(v.getPassword())
-                        .firstName(v.getFirstName())
-                        .lastName(v.getLastName())
-                        .build()));
-
-        userStateKeyUsernameKStream.to(getFeed(UserStateKeyUsername.class), Produced.with(Serdes.String(), userStateKeyUsernameSerde));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
         streams.start();
