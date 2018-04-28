@@ -1,3 +1,6 @@
+spring.kafka.consumer.properties.spring.json.trusted.packages: 'com.evolution.*'
+
+
 spring:
   application:
     name: 'evolution-user'
@@ -5,6 +8,8 @@ spring:
     bootstrap-servers: 'localhost:9092'
     consumer:
       auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: 'com.evolution.*'
   cloud:
     stream:
       bindings:

@@ -1,0 +1,90 @@
+package com.evolution.user.topology;
+
+import com.evolution.user.base.core.command.UserCreateCommand;
+import com.evolution.user.base.core.command.validation.UserCreateCommandValidationResponse;
+import com.evolution.user.base.core.common.CommandErrors;
+import com.evolution.user.core.AbstractTopology;
+import com.evolution.user.topology.core.UserCreateEvent;
+import com.evolution.user.topology.core.UserStateKeyUsername;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.common.serialization.Serde;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.Consumed;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.Joined;
+import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Produced;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.support.serializer.JsonSerde;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+
+import static com.evolution.user.core.HelpService.getFeed;
+
+@Component
+public class UserValidationCommandTopology extends AbstractTopology {
+
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public UserValidationCommandTopology(ObjectMapper objectMapper) {
+        super(UserValidationCommandTopology.class.getSimpleName(), UserValidationCommandTopology.class.getSimpleName(), Serdes.String().getClass(), JsonSerde.class);
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    public void init() {
+        StreamsBuilder builder = new StreamsBuilder();
+
+        Serde<UserCreateEvent> userCreateEventSerde = new JsonSerde<>(UserCreateEvent.class, objectMapper);
+        Serde<UserCreateCommandValidationResponse> userCreateCommandValidationResponseSerde = new JsonSerde<>(UserCreateCommandValidationResponse.class, objectMapper);
+        Serde<UserCreateCommand> userCreateCommandSerde = new JsonSerde<>(UserCreateCommand.class, objectMapper);
+        Serde<UserStateKeyUsername> userStateKeyUsernameSerde = new JsonSerde<>(UserStateKeyUsername.class, objectMapper);
+
+        final KStream<String, UserCreateCommand> userCreateCommandKStream = builder
+                .stream(getFeed(UserCreateCommand.class), Consumed.with(Serdes.String(), userCreateCommandSerde));
+
+        final KTable<String, UserStateKeyUsername> userStateKeyUsernameKTable = builder
+                .table(getFeed(UserStateKeyUsername.class), Consumed.with(Serdes.String(), userStateKeyUsernameSerde));
+
+        final KStream<String, UserCreateCommandValidationResponse> userCreateCommandValidationResponseKStream =
+                userCreateCommandKStream
+                        .selectKey((k, v) -> v.getUsername())
+                        .leftJoin(userStateKeyUsernameKTable, (uc, us) -> UserCreateCommandValidationResponse
+                                        .builder()
+                                        .errors(us == null ? new ArrayList<>() : new ArrayList<CommandErrors>() {{
+                                            add(CommandErrors.USERNAME_NOT_UNIQUE);
+                                        }})
+                                        .key(uc.getKey())
+                                        .operationNumber(uc.getOperationNumber())
+                                        .userCreateCommand(UserCreateCommand.builder()
+                                                .key(uc.getKey())
+                                                .username(uc.getUsername())
+                                                .password(uc.getPassword())
+                                                .firstName(uc.getFirstName())
+                                                .lastName(uc.getLastName())
+                                                .operationNumber(uc.getOperationNumber())
+                                                .build())
+                                        .build(),
+                                Joined.with(Serdes.String(), userCreateCommandSerde, userStateKeyUsernameSerde));
+
+        userCreateCommandValidationResponseKStream
+                .to(getFeed(UserCreateCommandValidationResponse.class), Produced.with(Serdes.String(), userCreateCommandValidationResponseSerde));
+
+        userCreateCommandValidationResponseKStream
+                .filter((k, v) -> v.getErrors().isEmpty())
+                .map((k, v) -> new KeyValue<>(k, UserCreateEvent.builder()
+                        .key(v.getKey())
+                        .eventNumber(v.getOperationNumber())
+                        .userCreateCommand(v.getUserCreateCommand())
+                        .build()))
+                .to(getFeed(UserCreateEvent.class), Produced.with(Serdes.String(), userCreateEventSerde));
+
+        KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
+        streams.start();
+    }
+}

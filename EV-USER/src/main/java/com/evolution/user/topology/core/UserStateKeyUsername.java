@@ -1,12 +1,12 @@
-package com.evolution.user.base.core.command;
+package com.evolution.user.topology.core;
 
-import com.evolution.user.base.core.common.CommandErrors;
+
+import com.evolution.user.base.core.state.IUserState;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -16,17 +16,23 @@ import java.util.List;
 @ToString
 @Builder
 @Wither
-public class UserCreateValidateCommand implements IUserCommand {
+public class UserStateKeyUsername implements IUserState {
 
+    @NotEmpty
     String key;
 
+    @NotEmpty
+    String eventNumber;
+
+    @NotEmpty
     String username;
 
+    @NotEmpty
     String password;
 
+    @NotEmpty
     String firstName;
 
+    @NotEmpty
     String lastName;
-
-    List<CommandErrors> errorsList = new ArrayList<>();
 }

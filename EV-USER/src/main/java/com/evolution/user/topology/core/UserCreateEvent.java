@@ -1,5 +1,6 @@
-package com.evolution.user.base.core.command;
+package com.evolution.user.topology.core;
 
+import com.evolution.user.base.core.command.UserCreateCommand;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -14,14 +15,14 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserUpdateUsernameCommand implements IUserCommand {
+public class UserCreateEvent implements UserEvent {
 
     @NotEmpty
     String key;
 
     @NotEmpty
-    String username;
+    UserCreateCommand userCreateCommand;
 
     @NotEmpty
-    String operationNumber;
+    String eventNumber;
 }

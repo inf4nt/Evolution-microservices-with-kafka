@@ -14,13 +14,19 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserUpdateUsernameCommand implements IUserCommand {
+public class UserUpdateFirstNameLastNameCommand implements IUserCommand {
 
     @NotEmpty
     String key;
 
     @NotEmpty
-    String username;
+    String eventNumber;
+
+    @NotEmpty
+    String firstName;
+
+    @NotEmpty
+    String lastName;
 
     @NotEmpty
     String operationNumber;
