@@ -1,11 +1,12 @@
 package com.evolution.user.topology;
 
 import com.evolution.user.base.core.command.UserCreateCommand;
-import com.evolution.user.base.core.command.validation.UserCreateCommandValidationResponse;
-import com.evolution.user.base.core.common.CommandErrors;
+import com.evolution.user.core.AbstractCommand;
 import com.evolution.user.core.AbstractTopology;
-import com.evolution.user.topology.core.UserCreateEvent;
-import com.evolution.user.topology.core.UserUsernameKey;
+import com.evolution.user.topology.core.common.CommandErrors;
+import com.evolution.user.topology.core.event.UserCreateEvent;
+import com.evolution.user.topology.core.temp.UserUsernameKey;
+import com.evolution.user.topology.core.validation.UserCreateCommandValidationResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -44,6 +45,7 @@ public class UserValidationCommandTopology extends AbstractTopology {
         Serde<UserCreateCommandValidationResponse> userCreateCommandValidationResponseSerde = new JsonSerde<>(UserCreateCommandValidationResponse.class, objectMapper);
         Serde<UserCreateCommand> userCreateCommandSerde = new JsonSerde<>(UserCreateCommand.class, objectMapper);
         Serde<UserUsernameKey> userStateKeyUsernameSerde = new JsonSerde<>(UserUsernameKey.class, objectMapper);
+        Serde<AbstractCommand> abstractCommandSerde = new JsonSerde<>(AbstractCommand.class, objectMapper);
 
         final KStream<String, UserCreateCommand> userCreateCommandKStream = builder
                 .stream(getFeed(UserCreateCommand.class), Consumed.with(Serdes.String(), userCreateCommandSerde));
@@ -75,14 +77,24 @@ public class UserValidationCommandTopology extends AbstractTopology {
         userCreateCommandValidationResponseKStream
                 .to(getFeed(UserCreateCommandValidationResponse.class), Produced.with(Serdes.String(), userCreateCommandValidationResponseSerde));
 
-        userCreateCommandValidationResponseKStream
+//        final KStream<String, AbstractCommand> abstractCommandKStream = userCreateCommandValidationResponseKStream
+//                .map((k, v) -> new KeyValue<>(k, AbstractCommand.builder()
+//                        .key(k)
+//                        .operationNumber(v.getOperationNumber())
+//                        .errors(v.getErrors())
+//                        .build()));
+//        abstractCommandKStream.to(getFeed(AbstractCommand.class), Produced.with(Serdes.String(), abstractCommandSerde));
+
+
+        final KStream<String, UserCreateEvent> userCreateEventKStream = userCreateCommandValidationResponseKStream
                 .filter((k, v) -> v.getErrors().isEmpty())
                 .map((k, v) -> new KeyValue<>(k, UserCreateEvent.builder()
                         .key(v.getKey())
                         .eventNumber(v.getOperationNumber())
                         .userCreateCommand(v.getUserCreateCommand())
-                        .build()))
-                .to(getFeed(UserCreateEvent.class), Produced.with(Serdes.String(), userCreateEventSerde));
+                        .build()));
+
+        userCreateEventKStream.to(getFeed(UserCreateEvent.class), Produced.with(Serdes.String(), userCreateEventSerde));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
         streams.start();

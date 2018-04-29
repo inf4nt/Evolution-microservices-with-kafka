@@ -1,4 +1,4 @@
-package com.evolution.user.base.core.common;
+package com.evolution.user.topology.core.common;
 
 public enum CommandErrors {
 

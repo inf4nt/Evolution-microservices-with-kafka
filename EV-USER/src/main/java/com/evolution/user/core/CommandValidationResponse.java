@@ -1,7 +1,6 @@
-package com.evolution.user.base.core.command.validation;
+package com.evolution.user.core;
 
-import com.evolution.user.base.core.common.CommandErrors;
-import com.evolution.user.core.Base;
+import com.evolution.user.topology.core.common.CommandErrors;
 
 import java.util.List;
 

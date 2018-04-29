@@ -1,4 +1,4 @@
-package com.evolution.user.topology.core;
+package com.evolution.user.topology.core.event;
 
 import com.evolution.user.core.Event;
 

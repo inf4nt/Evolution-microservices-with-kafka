@@ -1,13 +1,13 @@
-package com.evolution.user.base.core.command.validation;
+package com.evolution.user.core;
 
-import com.evolution.user.base.core.command.UserCreateCommand;
-import com.evolution.user.base.core.common.CommandErrors;
+import com.evolution.user.topology.core.common.CommandErrors;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,17 +18,14 @@ import java.util.List;
 @ToString
 @Builder
 @Wither
-public class UserCreateCommandValidationResponse implements CommandValidationResponse {
+public class AbstractCommand implements CommandValidationResponse {
 
     @NotEmpty
     String key;
 
     @NotEmpty
-    UserCreateCommand userCreateCommand;
+    String operationNumber;
 
     @NotNull
-    List<CommandErrors> errors;
-
-    @NotEmpty
-    String operationNumber;
+    List<CommandErrors> errors = new ArrayList<>();
 }

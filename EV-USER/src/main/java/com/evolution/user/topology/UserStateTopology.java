@@ -3,8 +3,8 @@ package com.evolution.user.topology;
 
 import com.evolution.user.base.core.state.UserState;
 import com.evolution.user.core.AbstractTopology;
-import com.evolution.user.topology.core.UserCreateEvent;
-import com.evolution.user.topology.core.UserUsernameKey;
+import com.evolution.user.topology.core.event.UserCreateEvent;
+import com.evolution.user.topology.core.temp.UserUsernameKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;

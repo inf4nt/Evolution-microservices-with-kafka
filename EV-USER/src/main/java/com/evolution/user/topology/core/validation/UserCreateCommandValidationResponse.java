@@ -1,11 +1,15 @@
-package com.evolution.user.topology.core;
+package com.evolution.user.topology.core.validation;
 
 import com.evolution.user.base.core.command.UserCreateCommand;
+import com.evolution.user.core.CommandValidationResponse;
+import com.evolution.user.topology.core.common.CommandErrors;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -15,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserCreateEvent implements UserEvent {
+public class UserCreateCommandValidationResponse implements CommandValidationResponse {
 
     @NotEmpty
     String key;
@@ -23,6 +27,9 @@ public class UserCreateEvent implements UserEvent {
     @NotEmpty
     UserCreateCommand userCreateCommand;
 
+    @NotNull
+    List<CommandErrors> errors;
+
     @NotEmpty
-    String eventNumber;
+    String operationNumber;
 }
