@@ -77,13 +77,13 @@ public class UserValidationCommandTopology extends AbstractTopology {
         userCreateCommandValidationResponseKStream
                 .to(getFeed(UserCreateCommandValidationResponse.class), Produced.with(Serdes.String(), userCreateCommandValidationResponseSerde));
 
-//        final KStream<String, AbstractCommand> abstractCommandKStream = userCreateCommandValidationResponseKStream
-//                .map((k, v) -> new KeyValue<>(k, AbstractCommand.builder()
-//                        .key(k)
-//                        .operationNumber(v.getOperationNumber())
-//                        .errors(v.getErrors())
-//                        .build()));
-//        abstractCommandKStream.to(getFeed(AbstractCommand.class), Produced.with(Serdes.String(), abstractCommandSerde));
+        final KStream<String, AbstractCommand> abstractCommandKStream = userCreateCommandValidationResponseKStream
+                .map((k, v) -> new KeyValue<>(k, AbstractCommand.builder()
+                        .key(k)
+                        .operationNumber(v.getOperationNumber())
+                        .errors(v.getErrors())
+                        .build()));
+        abstractCommandKStream.to(getFeed(AbstractCommand.class), Produced.with(Serdes.String(), abstractCommandSerde));
 
 
         final KStream<String, UserCreateEvent> userCreateEventKStream = userCreateCommandValidationResponseKStream

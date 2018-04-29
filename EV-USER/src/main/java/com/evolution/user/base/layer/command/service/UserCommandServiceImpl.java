@@ -32,6 +32,20 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
+    public void postUser(String operationNumber, UserCreateRequestDTO request) {
+        UserCreateCommand command = UserCreateCommand.builder()
+                .key(UUID.randomUUID().toString().replace("-", ""))
+                .operationNumber(operationNumber)
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .build();
+
+        kafkaTemplate.send(command.getFeed(), command.getKey(), command);
+    }
+
+    @Override
     public void updateUsername(UserUpdateUsernameRequestDTO request) {
 
     }

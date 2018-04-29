@@ -13,9 +13,9 @@ import org.springframework.cloud.stream.messaging.Sink;
 import java.util.Optional;
 
 @EnableBinding(Sink.class)
-public class UserStateSink {
+public class UserStateSinkStream {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserStateSink.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserStateSinkStream.class);
 
     @Autowired
     private UserRepository userRepository;

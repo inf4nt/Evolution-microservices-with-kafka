@@ -8,6 +8,8 @@ public interface UserCommandService {
 
     void postUser(UserCreateRequestDTO request);
 
+    void postUser(String operationNumber, UserCreateRequestDTO request);
+
     void updateUsername(UserUpdateUsernameRequestDTO request);
 
     void updateFirstNameLastName(UserUpdateFirstNameLastNameRequestDTO request);
