@@ -17,6 +17,8 @@ spring:
           destination: UserStateFeed
         input-command-status:
           destination: AbstractCommandFeed
+        input-command-status2:
+              destination: CommandExecuteFeed
   data:
     rest:
       base-path: '/state'
