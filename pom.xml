@@ -14,9 +14,4 @@
 	<name>evolution-source</name>
 	<description>Evolution microservices source</description>
 
-	<!--<modules>-->
-		<!--<module>evolution-user</module>-->
-		<!--<module>evolution-direct-message</module>-->
-	<!--</modules>-->
-
 </project>

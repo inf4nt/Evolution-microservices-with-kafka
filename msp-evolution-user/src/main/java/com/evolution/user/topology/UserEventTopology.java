@@ -52,7 +52,7 @@ public class UserEventTopology extends AbstractTopology {
                                 .eventNumber(ce.getOperationNumber())
                                 .userCreateCommand(uc)
                                 .build(),
-                        JoinWindows.of(TimeUnit.MINUTES.toMillis(1)),
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)),
                         Joined.with(Serdes.String(), commandExecuteSerde, userCreateCommandSerde));
 
         userCreateEventKStream.to(getFeed(UserCreateEvent.class), Produced.with(Serdes.String(), userCreateEventSerde));
