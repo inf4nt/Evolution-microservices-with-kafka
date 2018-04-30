@@ -6,7 +6,10 @@
 	<groupId>com.evolution</groupId>
 	<artifactId>evolution</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <modules>
+        <module>msp-evolution-library</module>
+    </modules>
+    <packaging>pom</packaging>
 
 	<name>evolution-source</name>
 	<description>Evolution microservices source</description>

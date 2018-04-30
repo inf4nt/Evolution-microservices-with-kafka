@@ -77,7 +77,7 @@ public class UserValidationCommandTopology extends AbstractTopology {
                                 .eventNumber(ce.getOperationNumber())
                                 .userCreateCommand(uc)
                                 .build(),
-                        JoinWindows.of(TimeUnit.MINUTES.toMillis(5)),
+                        JoinWindows.of(TimeUnit.MINUTES.toMillis(1)),
                         Joined.with(Serdes.String(), commandExecuteSerde, userCreateCommandSerde));
 
         userCreateEventKStream.to(getFeed(UserCreateEvent.class), Produced.with(Serdes.String(), userCreateEventSerde));
