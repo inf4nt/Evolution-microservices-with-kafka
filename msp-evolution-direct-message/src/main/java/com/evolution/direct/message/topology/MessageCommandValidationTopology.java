@@ -1,6 +1,8 @@
 package com.evolution.direct.message.topology;
 
 import com.evolution.direct.message.command.command.MessageCreateCommand;
+import com.evolution.direct.message.command.command.MessageUpdateTextCommand;
+import com.evolution.direct.message.query.state.MessageState;
 import com.evolution.direct.message.topology.common.CommandExecuteStatusEnum;
 import com.evolution.direct.message.topology.state.UserState;
 import com.evolution.library.core.CommandExecuteStatus;
@@ -39,6 +41,10 @@ public class MessageCommandValidationTopology extends AbstractTopology {
         Serde<MessageCreateCommand> messageCreateCommandSerde = new JsonSerde<>(MessageCreateCommand.class, objectMapper);
         Serde<UserState> userStateSerde = new JsonSerde<>(UserState.class, objectMapper);
         Serde<CommandExecuteStatus> commandExecuteStatusSerde = new JsonSerde<>(CommandExecuteStatus.class, objectMapper);
+        Serde<MessageState> messageStateSerde = new JsonSerde<>(MessageState.class, objectMapper);
+        Serde<MessageUpdateTextCommand> messageUpdateTextCommandSerde = new JsonSerde<>(MessageUpdateTextCommand.class, objectMapper);
+
+        final KTable<String, MessageState> stateMessageKTable = builder.table(getFeed(MessageState.class), Consumed.with(Serdes.String(), messageStateSerde));
 
         final KStream<String, MessageCreateCommand> messageCreateCommandKStream = builder
                 .stream(getFeed(MessageCreateCommand.class), Consumed.with(Serdes.String(), messageCreateCommandSerde));
@@ -82,6 +88,20 @@ public class MessageCommandValidationTopology extends AbstractTopology {
                                 Joined.with(Serdes.String(), commandExecuteStatusSerde, commandExecuteStatusSerde));
 
         commandExecuteStatusKStream.to(getFeed(CommandExecuteStatus.class), Produced.with(Serdes.String(), commandExecuteStatusSerde));
+
+//        final KStream<String, MessageUpdateTextCommand> messageUpdateTextCommandKStream = builder
+//                .stream(getFeed(MessageUpdateTextCommand.class), Consumed.with(Serdes.String(), messageUpdateTextCommandSerde));
+//
+//        final KStream<String, CommandExecuteStatus> updateExecuteStatusKStream = messageUpdateTextCommandKStream
+//                .leftJoin(stateMessageKTable, (mu, ms) -> CommandExecuteStatus.builder()
+//                        .key(mu.getKey())
+//                        .operationNumber(mu.getOperationNumber())
+//                        .errors(ms == null ? new ArrayList<String>() {{
+//                            add(CommandExecuteStatusEnum.MESSAGE_BY_KEY_NOT_FOUND.name());
+//                        }} : new ArrayList<>())
+//                        .build(), Joined.with(Serdes.String(), messageUpdateTextCommandSerde, messageStateSerde));
+//
+//        updateExecuteStatusKStream.to(getFeed(CommandExecuteStatus.class), Produced.with(Serdes.String(), commandExecuteStatusSerde));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
         streams.start();
