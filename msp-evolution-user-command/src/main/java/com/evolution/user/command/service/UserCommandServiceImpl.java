@@ -2,6 +2,7 @@ package com.evolution.user.command.service;
 
 import com.evolution.core.command.UserCreateCommand;
 import com.evolution.library.core.Base;
+import com.evolution.library.core.CommandRequestDTO;
 import com.evolution.user.command.dto.UserCreateRequestDTO;
 import com.evolution.user.command.dto.UserUpdateFirstNameLastNameRequestDTO;
 import com.evolution.user.command.dto.UserUpdateUsernameRequestDTO;
@@ -16,6 +17,26 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Autowired
     private KafkaTemplate<String, Base<String>> kafkaTemplate;
+
+    @Override
+    public void postUser(CommandRequestDTO requestDTO) {
+        if (requestDTO.getRequest().getClass() != UserCreateRequestDTO.class) {
+            throw new UnsupportedOperationException();
+        }
+
+        UserCreateRequestDTO request  = (UserCreateRequestDTO) requestDTO.getRequest();
+
+        UserCreateCommand command = UserCreateCommand.builder()
+                .key(UUID.randomUUID().toString().replace("-", ""))
+                .operationNumber(requestDTO.getOperationNumber())
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .build();
+
+        kafkaTemplate.send(command.getFeed(), command.getKey(), command);
+    }
 
     @Override
     public void postUser(UserCreateRequestDTO request) {

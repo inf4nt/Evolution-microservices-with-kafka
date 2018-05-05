@@ -1,5 +1,6 @@
 package com.evolution.user.command.dto;
 
+import com.evolution.library.core.RequestDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreateRequestDTO {
+public class UserCreateRequestDTO implements RequestDTO {
 
     @NotEmpty
     String username;

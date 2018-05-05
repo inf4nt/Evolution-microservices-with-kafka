@@ -1,10 +1,14 @@
 package com.evolution.user.command.controller;
 
+import com.evolution.library.core.CommandRequestDTO;
+import com.evolution.library.core.CommandRequestResponseBuilder;
+import com.evolution.library.core.CommandResponseDTO;
 import com.evolution.user.command.dto.UserCreateRequestDTO;
 import com.evolution.user.command.dto.UserUpdateFirstNameLastNameRequestDTO;
 import com.evolution.user.command.dto.UserUpdateUsernameRequestDTO;
 import com.evolution.user.command.service.UserCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +28,10 @@ public class UserCommandRestController {
     }
 
     @PostMapping
-    public void post(@Valid @RequestBody UserCreateRequestDTO request) {
-        userCommandService.postUser(request);
+    public ResponseEntity<CommandResponseDTO> post(@Valid @RequestBody UserCreateRequestDTO request) {
+        CommandRequestDTO commandRequestDTO = CommandRequestResponseBuilder.build(request);
+        userCommandService.postUser(commandRequestDTO);
+        return CommandRequestResponseBuilder.response(commandRequestDTO);
     }
 
     @PostMapping(value = "/update-username")
