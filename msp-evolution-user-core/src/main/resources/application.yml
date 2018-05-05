@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: 'msp-evolution-user-core'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+server:
+  port: 8183

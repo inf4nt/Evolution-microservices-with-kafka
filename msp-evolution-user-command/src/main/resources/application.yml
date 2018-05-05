@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: 'ms-evolution-user-command'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+server:
+  port: 8181

@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: 'msp-evolution-user-query'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: UserStateFeed
+  data:
+    rest:
+      base-path: '/state'
+server:
+  port: 8182
