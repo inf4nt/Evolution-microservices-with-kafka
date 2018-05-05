@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: 'msp-evolution-command-execute'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
+  data:
+    rest:
+      base-path: '/state'
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: CommandExecuteStatusFeed
+server:
+  port: 8089
+

@@ -1,11 +1,12 @@
-package com.evolution.user.core;
+package com.evolution.command.execute;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
-public class EvolutionUserCoreApplication {
+public class EvolutionCommandExecuteApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EvolutionUserCoreApplication.class, args);
+        SpringApplication.run(EvolutionCommandExecuteApplication.class, args);
     }
 }
