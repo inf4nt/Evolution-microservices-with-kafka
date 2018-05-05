@@ -12,6 +12,4 @@ import lombok.experimental.FieldDefaults;
 public class CommandRequestDTO {
 
     String operationNumber;
-
-    RequestDTO request;
 }

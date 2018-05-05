@@ -10,6 +10,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 
+import java.util.UUID;
+
 @EnableBinding(Sink.class)
 public class CommandExecuteStatusSink {
 
@@ -22,7 +24,7 @@ public class CommandExecuteStatusSink {
     public void sinkState(CommandExecuteStatus command) {
         logger.info("Catch CommandExecuteStatus:" + command);
         CommandExecuteStatusModel model = new CommandExecuteStatusModel();
-        model.setKey(command.getKey());
+        model.setKey(command.getOperationNumber());
         model.setOperationNumber(command.getOperationNumber());
         model.setErrors(command.getErrors());
 

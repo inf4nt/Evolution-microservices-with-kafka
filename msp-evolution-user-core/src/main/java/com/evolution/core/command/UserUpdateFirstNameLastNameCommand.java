@@ -20,9 +20,6 @@ public class UserUpdateFirstNameLastNameCommand implements IUserCommand {
     String key;
 
     @NotEmpty
-    String eventNumber;
-
-    @NotEmpty
     String firstName;
 
     @NotEmpty

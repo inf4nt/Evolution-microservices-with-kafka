@@ -33,7 +33,7 @@ public class UserStateSink {
         if (!original.isPresent()) {
             user.setKey(state.getKey());
         }
-
+        user.setKey(state.getKey());
         user.setUsername(state.getUsername());
         user.setPassword(state.getPassword());
         user.setFirstName(state.getFirstName());

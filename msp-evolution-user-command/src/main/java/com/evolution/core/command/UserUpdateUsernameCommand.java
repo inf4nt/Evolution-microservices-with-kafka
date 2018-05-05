@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserUpdateUsernameCommand implements IUserCommand {
+public class UserUpdateUsernameCommand implements UserCommand {
 
     @NotEmpty
     String key;

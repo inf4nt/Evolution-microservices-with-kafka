@@ -14,24 +14,11 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserCreateCommand implements UserCommand {
+public class UserDeleteCommand implements UserCommand {
 
     @NotEmpty
     String key;
 
     @NotEmpty
-    String username;
-
-    @NotEmpty
-    String password;
-
-    @NotEmpty
-    String firstName;
-
-    @NotEmpty
-    String lastName;
-
-    @NotEmpty
     String operationNumber;
 }
-

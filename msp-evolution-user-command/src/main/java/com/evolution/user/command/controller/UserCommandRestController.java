@@ -9,10 +9,7 @@ import com.evolution.user.command.service.UserCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -29,18 +26,30 @@ public class UserCommandRestController {
 
     @PostMapping
     public ResponseEntity<ResourceSupport> post(@Valid @RequestBody UserCreateRequestDTO request) {
-        CommandRequestDTO commandRequestDTO = CommandRequestResponseBuilder.build(request);
-        userCommandService.postUser(commandRequestDTO);
+        CommandRequestDTO commandRequestDTO = CommandRequestResponseBuilder.build();
+        userCommandService.postUser(commandRequestDTO.getOperationNumber(), request);
         return CommandRequestResponseBuilder.response(commandRequestDTO);
     }
 
-    @PostMapping(value = "/update-username")
-    public void updateUsername(@Valid @RequestBody UserUpdateUsernameRequestDTO request) {
-        userCommandService.updateUsername(request);
+    @PutMapping(value = "/update-username")
+    public ResponseEntity<ResourceSupport> updateUsername(@Valid @RequestBody UserUpdateUsernameRequestDTO request) {
+        CommandRequestDTO commandRequestDTO = CommandRequestResponseBuilder.build();
+        userCommandService.updateUsername(commandRequestDTO.getOperationNumber(), request);
+        return CommandRequestResponseBuilder.response(commandRequestDTO);
+
     }
 
-    @PostMapping(value = "/update-first-name-last-name")
-    public void updateFirstNameLastName(@Valid @RequestBody UserUpdateFirstNameLastNameRequestDTO request) {
-        userCommandService.updateFirstNameLastName(request);
+    @PutMapping(value = "/update-first-name-last-name")
+    public ResponseEntity<ResourceSupport> updateFirstNameLastName(@Valid @RequestBody UserUpdateFirstNameLastNameRequestDTO request) {
+        CommandRequestDTO commandRequestDTO = CommandRequestResponseBuilder.build();
+        userCommandService.updateFirstNameLastName(commandRequestDTO.getOperationNumber(), request);
+        return CommandRequestResponseBuilder.response(commandRequestDTO);
+    }
+
+    @DeleteMapping(value = "/{key}")
+    public ResponseEntity<ResourceSupport> delete(@PathVariable String key) {
+        CommandRequestDTO commandRequestDTO = CommandRequestResponseBuilder.build();
+        userCommandService.deleteUser(commandRequestDTO.getOperationNumber(), key);
+        return CommandRequestResponseBuilder.response(commandRequestDTO);
     }
 }
