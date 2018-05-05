@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: 'msp-evolution-direct-message-core'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+server:
+  port: 8283
