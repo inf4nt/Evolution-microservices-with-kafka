@@ -8,10 +8,18 @@
 	<version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>msp-evolution-library</module>
+		<module>msp-evolution-command-execute</module>
+		<module>msp-evolution-user-command</module>
+		<module>msp-evolution-user-query</module>
+		<module>msp-evolution-user-core</module>
+		<module>msp-evolution-direct-message-command</module>
+		<module>msp-evolution-direct-message-query</module>
+		<module>msp-evolution-direct-message-core</module>
     </modules>
     <packaging>pom</packaging>
 
 	<name>evolution-source</name>
 	<description>Evolution microservices source</description>
+
 
 </project>
