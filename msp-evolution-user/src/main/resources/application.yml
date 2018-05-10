@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: 'msp-evolution-user'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      auto-offset-reset: earliest
+  cloud:
+    stream:
+      bindings:
+        user-command-input:
+          destination: UserGlobalCommandFeed
+        user-command-output:
+          destination: UserGlobalEventFeed
+        user-event-input:
+          destination: UserGlobalEventFeed
+        user-event-output:
+          destination: UserGlobalStateFeed
+      kafka:
+        streams:
+          binder:
+            configuration:
+              commit.interval.ms: 1000
+              default.key.serde: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
+              default.value.serde: 'org.springframework.kafka.support.serializer.JsonSerde'
+            application-id: 'msp-evolution-user'
+  data:
+    rest:
+      base-path: '/state'
+server:
+  port: 8181
