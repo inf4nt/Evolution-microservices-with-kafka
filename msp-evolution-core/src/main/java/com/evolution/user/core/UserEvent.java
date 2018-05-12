@@ -31,7 +31,7 @@ public class UserEvent implements Event<String, UserRequestTypes, UserDomain, Us
     UserDomain domain;
 
     @NotEmpty
-    UserEventStatus userEventStatus;
+    UserEventStatus eventStatus;
 
     @Override
     public String getKey() {

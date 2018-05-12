@@ -6,6 +6,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -16,8 +18,10 @@ import lombok.experimental.Wither;
 @Wither
 public class MessageDomain implements Domain<String> {
 
+    @NotEmpty
     String key;
 
+    @NotEmpty
     String text;
 
     User sender;

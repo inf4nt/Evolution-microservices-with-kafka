@@ -3,35 +3,35 @@ package com.evolution.direct.message.core;
 import com.evolution.direct.message.core.common.MessageEventStatus;
 import com.evolution.direct.message.core.common.MessageRequestTypes;
 import com.evolution.library.core.v4.Event;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.Wither;
 
+import javax.validation.constraints.NotEmpty;
+
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Builder
+@Wither
 public class MessageEvent implements Event<String, MessageRequestTypes, MessageDomain, MessageEventStatus> {
-    @Override
-    public MessageRequestTypes getRequestType() {
-        return null;
-    }
 
-    @Override
-    public MessageDomain getDomain() {
-        return null;
-    }
+    @NotEmpty
+    String key;
 
-    @Override
-    public MessageEventStatus getUserEventStatus() {
-        return null;
-    }
+    @NotEmpty
+    String correlation;
 
-    @Override
-    public String getCorrelation() {
-        return null;
-    }
+    @NotEmpty
+    String operationNumber;
 
-    @Override
-    public String getKey() {
-        return null;
-    }
+    MessageEventStatus eventStatus;
 
-    @Override
-    public String getOperationNumber() {
-        return null;
-    }
+    @NotEmpty
+    MessageRequestTypes requestType;
+
+    MessageDomain domain;
 }

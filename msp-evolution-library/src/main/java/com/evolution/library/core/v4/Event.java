@@ -6,5 +6,5 @@ public interface Event<Key, RT extends RequestType, D extends Domain<Key>, ES ex
 
     D getDomain();
 
-    ES getUserEventStatus();
+    ES getEventStatus();
 }
