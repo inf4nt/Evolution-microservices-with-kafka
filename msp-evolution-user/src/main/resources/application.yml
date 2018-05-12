@@ -8,19 +8,19 @@ spring:
   cloud:
     stream:
       bindings:
-        user-command-input:
-          destination: UserGlobalCommandFeed
-        user-command-output:
-          destination: UserGlobalEventFeed
-        user-event-input:
-          destination: UserGlobalEventFeed
-        user-event-output:
-          destination: UserGlobalStateFeed
+        command-input:
+          destination: UserCommandFeed
+        command-output:
+          destination: UserEventFeed
+        event-input:
+          destination: UserEventFeed
+        event-output:
+          destination: UserStateEventFeed
       kafka:
         streams:
           binder:
             configuration:
-              commit.interval.ms: 1000
+              commit.interval.ms: 100
               default.key.serde: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
               default.value.serde: 'org.springframework.kafka.support.serializer.JsonSerde'
             application-id: 'msp-evolution-user'

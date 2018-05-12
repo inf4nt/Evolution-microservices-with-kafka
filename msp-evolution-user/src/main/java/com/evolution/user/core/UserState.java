@@ -1,17 +1,19 @@
 package com.evolution.user.core;
 
+import com.evolution.library.core.v4.State;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.Wither;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class UserState extends UserDomain {
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Builder
+@Wither
+public class UserState implements State<UserDomain> {
 
-    @Builder
-    private UserState(String username, String password, String firstName, String lastName) {
-        super(username, password, firstName, lastName);
-    }
+    UserDomain domain;
 }

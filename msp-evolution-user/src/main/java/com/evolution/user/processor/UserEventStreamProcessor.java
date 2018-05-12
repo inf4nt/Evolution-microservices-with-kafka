@@ -1,17 +1,19 @@
 package com.evolution.user.processor;
 
-import com.evolution.library.core.v3.MessageService;
-import com.evolution.user.core.basic.UserCreateRequestCommand;
-import com.evolution.user.core.basic.UserUpdateFirstNameRequestCommand;
-import com.evolution.user.core.global.UserGlobalEvent;
-import com.evolution.user.core.global.UserGlobalState;
+import com.evolution.user.core.common.UserEventStatus;
+import com.evolution.library.core.v4.MessageService;
+import com.evolution.user.core.UserEvent;
+import com.evolution.user.core.UserEventHandler;
+import com.evolution.user.core.UserStateEvent;
 import com.evolution.user.processor.bindings.UserEventProcessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Serialized;
+import org.apache.kafka.streams.state.KeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -21,55 +23,33 @@ import org.springframework.messaging.handler.annotation.SendTo;
 @EnableBinding(UserEventProcessor.class)
 public class UserEventStreamProcessor {
 
+    private final UserEventHandler userEventHandler;
+
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    private ObjectMapper objectMapper;
+    public UserEventStreamProcessor(UserEventHandler userEventHandler,
+                                    ObjectMapper objectMapper) {
+        this.userEventHandler = userEventHandler;
+        this.objectMapper = objectMapper;
+    }
 
     @StreamListener(UserEventProcessor.INPUT)
     @SendTo(UserEventProcessor.OUTPUT)
-    public KStream<String, UserGlobalState> processState(KStream<String, UserGlobalEvent> input) {
-        System.out.println("processState:");
-
-        final Serde<UserGlobalEvent> eventSerde = new JsonSerde<>(UserGlobalEvent.class, objectMapper);
-        final Serde<UserGlobalState> stateEventSerde = new JsonSerde<>(UserGlobalState.class, objectMapper);
+    public KStream<String, UserStateEvent> process(KStream<String, UserEvent> input) {
+        System.out.println("UserEventStreamProcessor");
+        final Serde<UserStateEvent> userStateEventSerde = new JsonSerde<>(UserStateEvent.class, objectMapper);
+        final Serde<UserEvent> userEventSerde = new JsonSerde<>(UserEvent.class, objectMapper);
 
         return input
-                .groupByKey(Serialized.with(Serdes.String(), eventSerde))
-                .aggregate(UserGlobalState::new, (key, event, state) -> handle(event, state), Materialized.with(Serdes.String(), stateEventSerde))
+                .filter((k, v) -> v.getUserEventStatus() == UserEventStatus.Progress)
+                .groupByKey(Serialized.with(Serdes.String(), userEventSerde))
+                .aggregate(UserStateEvent::new,
+                        (key, event, state) -> userEventHandler.handle(event, state),
+                        Materialized
+                                .<String, UserStateEvent, KeyValueStore<Bytes, byte[]>>as(MessageService.getStore(UserStateEvent.class))
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(userStateEventSerde))
                 .toStream();
-    }
-
-    public UserGlobalState handle(UserGlobalEvent event, UserGlobalState state) {
-        String type = event.getMessageType();
-
-        if (type.equals(MessageService.getMessageType(UserCreateRequestCommand.class))) {
-            return UserGlobalState
-                    .builder()
-                    .messageType(event.getMessageType())
-                    .key(event.getKey())
-                    .eventNumber(event.getEventNumber())
-                    .correlation(MessageService.random())
-
-                    .username(event.getUsername())
-                    .password(event.getPassword())
-                    .firstName(event.getFirstName())
-                    .lastName(event.getLastName())
-
-                    .build();
-        } else if (type.equals(MessageService.getMessageType(UserUpdateFirstNameRequestCommand.class))) {
-            return UserGlobalState
-                    .builder()
-                    .firstName(event.getFirstName())
-
-                    .messageType(event.getMessageType())
-                    .key(state.getKey())
-                    .eventNumber(state.getEventNumber())
-                    .correlation(MessageService.random())
-                    .username(state.getUsername())
-                    .password(state.getPassword())
-                    .lastName(state.getLastName())
-                    .build();
-        } else {
-            throw new UnsupportedOperationException("UserGlobalState handle");
-        }
     }
 }

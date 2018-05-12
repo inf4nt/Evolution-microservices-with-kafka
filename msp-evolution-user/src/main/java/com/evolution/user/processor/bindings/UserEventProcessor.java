@@ -6,12 +6,12 @@ import org.springframework.cloud.stream.annotation.Output;
 
 public interface UserEventProcessor {
 
-    String INPUT = "user-event-input";
+    String INPUT = "event-input";
 
     @Input(INPUT)
     KStream<?, ?> input();
 
-    String OUTPUT = "user-event-output";
+    String OUTPUT = "event-output";
 
     @Output(OUTPUT)
     KStream<?, ?> output();

@@ -10,7 +10,7 @@ public class MessageService {
         return clazz.getSimpleName();
     }
 
-    public static String getFeed(Class<? extends Message> clazz) {
+    public static String getFeed(Class clazz) {
         return clazz.getSimpleName() + "Feed";
     }
 

@@ -1,6 +1,6 @@
 package com.evolution.user.config;
 
-import com.evolution.library.core.v3.global.GlobalMessage;
+import com.evolution.library.core.v4.Message;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,12 +30,12 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, GlobalMessage<String>> producerFactory() {
+    public ProducerFactory<String, Message<String>> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, GlobalMessage<String>> kafkaTemplate() {
+    public KafkaTemplate<String, Message<String>> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
