@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: 'msp-direct-message'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
