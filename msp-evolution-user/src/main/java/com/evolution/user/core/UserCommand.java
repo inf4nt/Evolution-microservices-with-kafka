@@ -18,6 +18,7 @@ import javax.validation.constraints.NotEmpty;
 @Wither
 public class UserCommand implements Command<String, UserContent, UserRequestTypes> {
 
+    @NotEmpty
     String key;
 
     @NotEmpty

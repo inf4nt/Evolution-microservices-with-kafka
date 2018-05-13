@@ -8,6 +8,8 @@ spring:
   cloud:
     stream:
       bindings:
+        input:
+          destination: UserDomainFeed
         command-input:
           destination: UserCommandFeed
         command-output:
@@ -15,7 +17,11 @@ spring:
         event-input:
           destination: UserEventFeed
         event-output:
-          destination: UserStateEventFeed
+          destination: UserStateFeed
+        domain-input:
+          destination: UserStateFeed
+        domain-output:
+          destination: UserDomainFeed
       kafka:
         streams:
           binder:

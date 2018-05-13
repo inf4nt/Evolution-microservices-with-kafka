@@ -1,11 +1,12 @@
 package com.evolution.user.core;
 
-import com.evolution.library.core.v5.Domain;
+import com.evolution.library.core.v5.State;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
 import javax.validation.constraints.NotEmpty;
+
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserDomain implements Domain<String> {
+public class UserState implements State<String, UserContent> {
 
     @NotEmpty
     String key;
@@ -23,18 +24,5 @@ public class UserDomain implements Domain<String> {
     @NotEmpty
     String eventNumber;
 
-    @NotEmpty
-    String nickname;
-
-    @NotEmpty
-    String username;
-
-    @NotEmpty
-    String password;
-
-    @NotEmpty
-    String firstName;
-
-    @NotEmpty
-    String lastName;
+    UserContent content;
 }

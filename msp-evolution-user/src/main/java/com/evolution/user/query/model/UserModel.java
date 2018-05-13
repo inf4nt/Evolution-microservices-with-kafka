@@ -1,6 +1,5 @@
-package com.evolution.user.core;
+package com.evolution.user.query.model;
 
-import com.evolution.library.core.v5.Domain;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -15,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserDomain implements Domain<String> {
+public class UserModel {
 
     @NotEmpty
     String key;
