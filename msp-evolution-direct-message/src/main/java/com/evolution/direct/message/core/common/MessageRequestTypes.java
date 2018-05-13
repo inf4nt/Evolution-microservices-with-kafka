@@ -6,5 +6,5 @@ public enum  MessageRequestTypes implements RequestType {
 
     MessageCreateRequest,
     MessageUpdateTextRequest,
-    MessageUpdateIsReadRequst
+    MessageUpdateIsReadRequest
 }

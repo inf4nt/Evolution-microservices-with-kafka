@@ -3,3 +3,35 @@ spring:
     name: 'msp-direct-message'
   kafka:
     bootstrap-servers: 'localhost:9092'
+  data:
+    rest:
+      base-path: '/state'
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: MessageDomainFeed
+        command-input:
+          destination: MessageCommandFeed
+        command-output:
+          destination: MessageEventFeed
+        event-input:
+          destination: MessageEventFeed
+        event-output:
+          destination: MessageStateFeed
+        domain-input:
+          destination: MessageStateFeed
+        user-domain-input:
+          destination: UserDomainFeed
+        domain-output:
+          destination: MessageDomainFeed
+      kafka:
+        streams:
+          binder:
+            configuration:
+              commit.interval.ms: 100
+              default.key.serde: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
+              default.value.serde: 'org.springframework.kafka.support.serializer.JsonSerde'
+            application-id: 'msp-direct-message'
+server:
+  port: 8282

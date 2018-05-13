@@ -22,39 +22,52 @@ public class FakeData {
     @Autowired
     private UserRequestTransform userRequestTransform;
 
-    private static final String key = MessageService.random();
+    private static final String key1 = "1";
+    private static final String key2 = "2";
 
     private static int count = 1;
 
     @PostConstruct
     public void init() {
-        UserCreateRequest userCreateRequest = UserCreateRequest.builder()
-                .key(key)
-                .username("maksim.lukaretskiy" + key)
+        UserCreateRequest userCreateRequest1 = UserCreateRequest.builder()
+                .key(key1)
+                .username("maksim.lukaretskiy" + key1)
                 .password("1234")
                 .firstName("Maksim")
                 .lastName("Lukaretskiy")
                 .build();
 
-        UserCommand command = userRequestTransform.transform(userCreateRequest);
+        UserCommand command1 = userRequestTransform.transform(userCreateRequest1);
 
-        kafkaTemplate.send(command.getFeed(), command.getKey(), command);
+        kafkaTemplate.send(command1.getFeed(), command1.getKey(), command1);
 
-    }
 
-    @Scheduled(fixedDelay = 5000)
-    public void scheduler() {
-        UserUpdateFirstNameRequest request = UserUpdateFirstNameRequest.builder()
-                .key(key)
-                .firstName("first name " + count)
+        UserCreateRequest userCreateRequest2 = UserCreateRequest.builder()
+                .key(key1)
+                .username("yevgen.berberyan" + key2)
+                .password("1234")
+                .firstName("Yevgen")
+                .lastName("Berberyan")
                 .build();
 
+        UserCommand command2 = userRequestTransform.transform(userCreateRequest2);
 
-        UserCommand command = userRequestTransform.transform(request);
-
-        kafkaTemplate.send(command.getFeed(), command.getFeed(), command);
-
-        count++;
+        kafkaTemplate.send(command2.getFeed(), command2.getKey(), command2);
     }
+
+//    @Scheduled(fixedDelay = 5000)
+//    public void scheduler() {
+//        UserUpdateFirstNameRequest request = UserUpdateFirstNameRequest.builder()
+//                .key(key)
+//                .firstName("first name " + count)
+//                .build();
+//
+//
+//        UserCommand command = userRequestTransform.transform(request);
+//
+//        kafkaTemplate.send(command.getFeed(), command.getFeed(), command);
+//
+//        count++;
+//    }
 
 }

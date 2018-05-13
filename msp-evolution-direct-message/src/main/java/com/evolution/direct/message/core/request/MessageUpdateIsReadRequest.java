@@ -16,10 +16,10 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class MessageUpdateIsReadRequst implements Request<String, MessageRequestTypes> {
+public class MessageUpdateIsReadRequest implements Request<String, MessageRequestTypes> {
 
     @NotEmpty
     String key;
 
-    final MessageRequestTypes requestType = MessageRequestTypes.MessageUpdateIsReadRequst;
+    final MessageRequestTypes requestType = MessageRequestTypes.MessageUpdateIsReadRequest;
 }

@@ -24,6 +24,12 @@ public class UserDomain implements Domain<String> {
     String eventNumber;
 
     @NotEmpty
+    String username;
+
+    @NotEmpty
+    String password;
+
+    @NotEmpty
     String firstName;
 
     @NotEmpty
