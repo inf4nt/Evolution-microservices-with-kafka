@@ -1,30 +1,9 @@
-spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
+#spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms: 1000
 
 spring:
   application:
     name: 'msp-evolution.core'
   kafka:
     bootstrap-servers: 'localhost:9092'
-    consumer:
-      auto-offset-reset: earliest
-  cloud:
-    stream:
-      bindings:
-        user-event-aggregator-input:
-          destination: UserEventAggregatorFeed
-        user-state-output:
-          destination: UserStateFeed
-        input:
-          destination: UserCreateCommandFeed
-        output:
-          destination: UserEventAggregatorFeed
-      kafka:
-        streams:
-          binder:
-            configuration:
-#              key.serde: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
-              default.key.serde: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
-              default.value.serde: 'org.springframework.kafka.support.serializer.JsonSerde'
-            application-id: 'msp-evolution-core-application'
 server:
   port: 8787

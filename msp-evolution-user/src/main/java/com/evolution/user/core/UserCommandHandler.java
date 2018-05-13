@@ -68,7 +68,7 @@ public class UserCommandHandler implements CommandHandler<UserCommand, UserEvent
 
         return res
                 .withRequestType(type)
-                .withUserEventStatus(status)
+                .withEventStatus(status)
                 .withCorrelation(MessageService.random())
                 .withOperationNumber(command.getOperationNumber())
                 .withDomain(command.getDomain());

@@ -14,6 +14,7 @@ public class UserRequestTransform implements RequestTransform<UserCommand> {
     @Override
     public UserCommand transform(Request request) {
         UserRequestTypes types = (UserRequestTypes) request.getRequestType();
+
         switch (types) {
             case UserCreateRequest: {
                 UserCreateRequest r = (UserCreateRequest) request;

@@ -42,7 +42,7 @@ public class FakeData {
 
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 5000)
     public void scheduler() {
         UserUpdateFirstNameRequest request = UserUpdateFirstNameRequest.builder()
                 .key(key)

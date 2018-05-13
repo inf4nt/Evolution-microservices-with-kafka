@@ -13,7 +13,7 @@ public class MessageService {
     }
 
     public static String getStore(Class<? extends Message> clazz) {
-        return clazz.getSimpleName() + "Feed";
+        return clazz.getSimpleName() + "Store";
     }
 
     public static String random() {

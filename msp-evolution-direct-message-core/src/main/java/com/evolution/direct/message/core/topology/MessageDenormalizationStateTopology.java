@@ -69,7 +69,8 @@ public class MessageDenormalizationStateTopology extends AbstractTopology {
                                 .build(),
                         Joined.with(Serdes.String(), messageStateSenderSerde, userStateSerde));
 
-        messageDenormalizationStateKStream.to(getFeed(MessageDenormalizationState.class), Produced.with(Serdes.String(), messageDenormalizationStateSerde));
+        messageDenormalizationStateKStream
+                .to(getFeed(MessageDenormalizationState.class), Produced.with(Serdes.String(), messageDenormalizationStateSerde));
 
 
         KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfig());
