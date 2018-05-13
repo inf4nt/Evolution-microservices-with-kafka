@@ -1,7 +1,7 @@
 package com.evolution.user.core.common;
 
 
-import com.evolution.library.core.v4.RequestType;
+import com.evolution.library.core.v5.RequestType;
 
 public enum  UserRequestTypes implements RequestType {
 

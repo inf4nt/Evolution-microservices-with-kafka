@@ -49,18 +49,18 @@ public class UserProcessor {
 
     @StreamListener(EventProcessor.INPUT)
     @SendTo(EventProcessor.OUTPUT)
-    public KStream<String, UserStateEvent> process(@Valid KStream<String, UserEvent> input) {
+    public KStream<String, UserState> process(@Valid KStream<String, UserEvent> input) {
         System.out.println("UserEventStreamProcessor");
-        final Serde<UserStateEvent> userStateEventSerde = new JsonSerde<>(UserStateEvent.class, objectMapper);
+        final Serde<UserState> userStateEventSerde = new JsonSerde<>(UserState.class, objectMapper);
         final Serde<UserEvent> userEventSerde = new JsonSerde<>(UserEvent.class, objectMapper);
 
         return input
                 .filter((k, v) -> v.getEventStatus() == UserEventStatus.Progress)
                 .groupByKey(Serialized.with(Serdes.String(), userEventSerde))
-                .aggregate(UserStateEvent::new,
+                .aggregate(UserState::new,
                         (key, event, state) -> userEventHandler.handle(event, state),
                         Materialized
-                                .<String, UserStateEvent, KeyValueStore<Bytes, byte[]>>as(MessageService.getStore(UserStateEvent.class))
+                                .<String, UserState, KeyValueStore<Bytes, byte[]>>as(MessageService.getStore(UserState.class))
                                 .withKeySerde(Serdes.String())
                                 .withValueSerde(userStateEventSerde))
                 .toStream();

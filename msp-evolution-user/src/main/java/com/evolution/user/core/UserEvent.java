@@ -1,6 +1,6 @@
 package com.evolution.user.core;
 
-import com.evolution.library.core.v4.Event;
+import com.evolution.library.core.v5.Event;
 import com.evolution.user.core.common.UserEventStatus;
 import com.evolution.user.core.common.UserRequestTypes;
 import lombok.*;
@@ -17,24 +17,22 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserEvent implements Event<String, UserRequestTypes, UserDomain, UserEventStatus> {
+public class UserEvent implements Event<String, UserContent, UserRequestTypes, UserEventStatus> {
+
+    @NotEmpty
+    String key;
 
     @NotEmpty
     String correlation;
 
     @NotEmpty
-    UserRequestTypes requestType;
+    UserRequestTypes type;
 
     @NotEmpty
     String operationNumber;
 
-    UserDomain domain;
-
     @NotEmpty
     UserEventStatus eventStatus;
 
-    @Override
-    public String getKey() {
-        return domain.getKey();
-    }
+    UserContent content;
 }

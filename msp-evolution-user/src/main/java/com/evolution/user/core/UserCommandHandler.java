@@ -31,8 +31,8 @@ public class UserCommandHandler implements CommandHandler<UserCommand, UserEvent
     public UserEvent handle(@Valid UserCommand command) {
         //todo по сути каждая операция команда в евент работает одинаково. Скорее смысл в том чтоб валидировать ее каким-то образом
 
-        final ReadOnlyKeyValueStore<String, UserStateEvent> store =
-                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserStateEvent.class), QueryableStoreTypes.keyValueStore());
+        final ReadOnlyKeyValueStore<String, UserState> store =
+                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserState.class), QueryableStoreTypes.keyValueStore());
 
         @NotEmpty UserRequestTypes type = command.getRequestType();
         UserEvent res = UserEvent.builder().build();
@@ -40,7 +40,7 @@ public class UserCommandHandler implements CommandHandler<UserCommand, UserEvent
 
         switch (type) {
             case UserUpdateFirstNameRequest: {
-                UserStateEvent state = store.get(command.getKey());
+                UserState state = store.get(command.getKey());
                 if (state == null) {
                    status = Fail;
                 } else {
@@ -49,7 +49,7 @@ public class UserCommandHandler implements CommandHandler<UserCommand, UserEvent
                 break;
             }
             case UserCreateRequest: {
-                KeyValueIterator<String, UserStateEvent> iterator = store.all();
+                KeyValueIterator<String, UserState> iterator = store.all();
                 while (iterator.hasNext()) {
                     if (iterator.next().value.getDomain().getUsername().equals(command.getDomain().getUsername())) {
                         status = Fail;

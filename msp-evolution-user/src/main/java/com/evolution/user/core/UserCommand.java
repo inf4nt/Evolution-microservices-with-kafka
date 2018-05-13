@@ -1,6 +1,6 @@
 package com.evolution.user.core;
 
-import com.evolution.library.core.v4.Command;
+import com.evolution.library.core.v5.Command;
 import com.evolution.user.core.common.UserRequestTypes;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +16,9 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class UserCommand implements Command<String, UserRequestTypes, UserDomain> {
+public class UserCommand implements Command<String, UserContent, UserRequestTypes> {
+
+    String key;
 
     @NotEmpty
     String correlation;
@@ -25,12 +27,7 @@ public class UserCommand implements Command<String, UserRequestTypes, UserDomain
     String operationNumber;
 
     @NotEmpty
-    UserRequestTypes requestType;
+    UserRequestTypes type;
 
-    UserDomain domain;
-
-    @Override
-    public String getKey() {
-        return this.domain.getKey();
-    }
+    UserContent content;
 }

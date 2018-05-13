@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 
 @Service
-public class UserEventHandler implements EventHandler<UserEvent, UserStateEvent> {
+public class UserEventHandler implements EventHandler<UserEvent, UserState> {
 
     private static final Logger logger = LoggerFactory.getLogger(UserEventHandler.class);
 
     @Override
-    public UserStateEvent handle(@Valid UserEvent event, @Valid UserStateEvent state) {
+    public UserState handle(@Valid UserEvent event, @Valid UserState state) {
         UserRequestTypes type = event.getRequestType();
-        UserStateEvent result;
+        UserState result;
 
         switch (type) {
             case UserCreateRequest: {
-                result = UserStateEvent.builder()
+                result = UserState.builder()
                         .domain(event.getDomain())
                         .build();
                 break;

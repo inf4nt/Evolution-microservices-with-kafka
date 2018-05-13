@@ -1,7 +1,7 @@
 package com.evolution.user.query;
 
 import com.evolution.library.core.v4.MessageService;
-import com.evolution.user.core.UserStateEvent;
+import com.evolution.user.core.UserState;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -25,16 +25,16 @@ public class UserQueryController {
     }
 
     @GetMapping
-    public ResponseEntity<KeyValueIterator<String, UserStateEvent>> findAll() {
-        final ReadOnlyKeyValueStore<String, UserStateEvent> store =
-                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserStateEvent.class), QueryableStoreTypes.keyValueStore());
+    public ResponseEntity<KeyValueIterator<String, UserState>> findAll() {
+        final ReadOnlyKeyValueStore<String, UserState> store =
+                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserState.class), QueryableStoreTypes.keyValueStore());
         return ResponseEntity.ok(store.all());
     }
 
     @GetMapping(value = "/{key}")
-    public ResponseEntity<UserStateEvent> findByKey(@PathVariable String key) {
-        final ReadOnlyKeyValueStore<String, UserStateEvent> store =
-                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserStateEvent.class), QueryableStoreTypes.keyValueStore());
+    public ResponseEntity<UserState> findByKey(@PathVariable String key) {
+        final ReadOnlyKeyValueStore<String, UserState> store =
+                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserState.class), QueryableStoreTypes.keyValueStore());
         return ResponseEntity.ok(store.get(key));
     }
 }
