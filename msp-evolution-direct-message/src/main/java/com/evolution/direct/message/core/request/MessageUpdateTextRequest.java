@@ -16,18 +16,13 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class MessageCreateRequest implements Request<String, MessageRequestTypes> {
+public class MessageUpdateTextRequest implements Request<String, MessageRequestTypes> {
 
+    @NotEmpty
     String key;
 
     @NotEmpty
     String text;
 
-    @NotEmpty
-    String sender;
-
-    @NotEmpty
-    String recipient;
-
-    final MessageRequestTypes requestType = MessageRequestTypes.MessageCreateRequest;
+    final MessageRequestTypes requestType = MessageRequestTypes.MessageUpdateTextRequest;
 }

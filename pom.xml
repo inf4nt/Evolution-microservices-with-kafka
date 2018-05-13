@@ -9,12 +9,8 @@
     <modules>
         <module>msp-evolution-library</module>
 		<module>msp-evolution-command-execute</module>
-		<module>msp-evolution-user-command</module>
-		<module>msp-evolution-user-query</module>
-		<module>msp-evolution-user-core</module>
-		<module>msp-evolution-direct-message-command</module>
-		<module>msp-evolution-direct-message-query</module>
-		<module>msp-evolution-direct-message-core</module>
+		<module>msp-evolution-direct-message</module>
+		<module>msp-evolution-user</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -1,7 +1,8 @@
-package com.evolution.direct.message.core.request;
+package com.evolution.direct.message.core;
 
 import com.evolution.direct.message.core.common.MessageRequestTypes;
-import com.evolution.library.core.v5.Request;
+import com.evolution.direct.message.core.content.MessageContent;
+import com.evolution.library.core.v5.Command;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
@@ -16,18 +17,16 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 @Builder
 @Wither
-public class MessageCreateRequest implements Request<String, MessageRequestTypes> {
+public class MessageCommand implements Command<String, MessageContent, MessageRequestTypes> {
 
+    @NotEmpty
     String key;
 
     @NotEmpty
-    String text;
+    String correlation;
 
     @NotEmpty
-    String sender;
+    MessageRequestTypes type;
 
-    @NotEmpty
-    String recipient;
-
-    final MessageRequestTypes requestType = MessageRequestTypes.MessageCreateRequest;
+    MessageContent content;
 }
