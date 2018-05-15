@@ -27,6 +27,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.evolution.user.share</groupId>
+            <artifactId>evolution-user-share</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>

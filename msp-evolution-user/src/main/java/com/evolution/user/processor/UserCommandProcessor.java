@@ -9,6 +9,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -26,10 +27,15 @@ public class UserCommandProcessor {
 
     @StreamListener(CommandProcessor.INPUT)
     @SendTo(CommandProcessor.OUTPUT)
-    public Message<UserEvent> process(@Valid UserCommand command) {
+    public Message<UserEvent> process(@Valid UserCommand command,
+                                      @Header(KafkaHeaders.ACKNOWLEDGMENT) Object classType) {
+        System.out.println("HEADER WITH CLASS TYPE:" + classType);
         return MessageBuilder
-                .withPayload(userCommandHandler.handle(command))
-                .setHeader(KafkaHeaders.MESSAGE_KEY, command.getKey().getBytes())
+                .withPayload(UserEvent.builder().build())
                 .build();
+//        return MessageBuilder
+//                .withPayload(userCommandHandler.handle(command))
+//                .setHeader(KafkaHeaders.MESSAGE_KEY, command.getKey().getBytes())
+//                .build();
     }
 }

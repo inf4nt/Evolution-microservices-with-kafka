@@ -1,6 +1,6 @@
 package com.evolution.user.core.request;
 
-import com.evolution.library.core.v4.Request;
+import com.evolution.library.core.v5.Request;
 import com.evolution.user.core.common.UserRequestTypes;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
