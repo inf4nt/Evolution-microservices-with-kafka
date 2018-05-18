@@ -4,12 +4,13 @@ import com.evolution.user.core.UserCommand;
 import com.evolution.user.core.UserCommandHandler;
 import com.evolution.user.core.UserEvent;
 import com.evolution.user.processor.bindings.CommandProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -17,6 +18,8 @@ import javax.validation.Valid;
 
 @EnableBinding(CommandProcessor.class)
 public class UserCommandProcessor {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserCommandProcessor.class);
 
     private final UserCommandHandler userCommandHandler;
 
@@ -27,15 +30,11 @@ public class UserCommandProcessor {
 
     @StreamListener(CommandProcessor.INPUT)
     @SendTo(CommandProcessor.OUTPUT)
-    public Message<UserEvent> process(@Valid UserCommand command,
-                                      @Header(KafkaHeaders.ACKNOWLEDGMENT) Object classType) {
-        System.out.println("HEADER WITH CLASS TYPE:" + classType);
+    public Message<UserEvent> process(@Valid UserCommand command) {
+        logger.info("Catch command:" + command);
         return MessageBuilder
-                .withPayload(UserEvent.builder().build())
+                .withPayload(userCommandHandler.handle(command))
+                .setHeader(KafkaHeaders.MESSAGE_KEY, command.getKey().getBytes())
                 .build();
-//        return MessageBuilder
-//                .withPayload(userCommandHandler.handle(command))
-//                .setHeader(KafkaHeaders.MESSAGE_KEY, command.getKey().getBytes())
-//                .build();
     }
 }

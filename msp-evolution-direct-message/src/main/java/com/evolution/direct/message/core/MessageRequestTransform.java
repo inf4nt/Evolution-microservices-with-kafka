@@ -24,7 +24,7 @@ public class MessageRequestTransform implements RequestTransform<String, Message
         command.withContent(MessageContent.builder().build());
 
         switch (type) {
-            case MessageUpdateIsReadRequst:
+            case MessageUpdateIsReadRequest:
                 command.getContent()
                         .withRead(true);
                 break;
@@ -46,6 +46,7 @@ public class MessageRequestTransform implements RequestTransform<String, Message
         return command
                 .withKey(key)
                 .withType(type)
+                .withOperationNumber(MessageService.random())
                 .withCorrelation(MessageService.random());
     }
 }

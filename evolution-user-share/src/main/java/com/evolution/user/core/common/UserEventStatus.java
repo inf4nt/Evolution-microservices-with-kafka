@@ -4,6 +4,7 @@ import com.evolution.library.core.v5.EventStatus;
 
 public enum UserEventStatus implements EventStatus {
 
-    Fail,
-    Progress
+    USER_BY_KEY_NOT_FOUND,
+    USER_BY_USER_NAME_ALREADY_EXIST,
+    PROGRESS
 }

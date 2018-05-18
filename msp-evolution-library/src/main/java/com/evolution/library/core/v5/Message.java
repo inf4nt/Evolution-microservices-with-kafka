@@ -4,6 +4,8 @@ public interface Message<Key, MC extends Content, RT extends RequestType> extend
 
     String getCorrelation();
 
+    String getOperationNumber();
+
     MC getContent();
 
     RT getType();

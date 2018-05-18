@@ -22,7 +22,7 @@ public class MessageState implements State<String, MessageContent> {
     String key;
 
     @NotEmpty
-    String eventNumber;
+    String operationNumber;
 
     MessageContent content;
 }

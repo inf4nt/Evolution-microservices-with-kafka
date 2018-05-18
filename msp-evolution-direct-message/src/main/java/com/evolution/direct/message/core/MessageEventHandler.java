@@ -20,7 +20,7 @@ public class MessageEventHandler implements EventHandler<MessageEvent, MessageSt
                 state.getContent()
                         .withText(event.getContent().getText());
                 break;
-            case MessageUpdateIsReadRequst:
+            case MessageUpdateIsReadRequest:
                 state.getContent()
                         .withRead(true);
                 break;
@@ -28,6 +28,6 @@ public class MessageEventHandler implements EventHandler<MessageEvent, MessageSt
 
         return state
                 .withKey(event.getKey())
-                .withEventNumber(event.getCorrelation());
+                .withOperationNumber(event.getCorrelation());
     }
 }

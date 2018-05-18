@@ -29,4 +29,7 @@ public class MessageCommand implements Command<String, MessageContent, MessageRe
     MessageRequestTypes type;
 
     MessageContent content;
+
+    @NotEmpty
+    String operationNumber;
 }

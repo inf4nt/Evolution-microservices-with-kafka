@@ -10,14 +10,14 @@ spring:
       bindings:
 #        input:
 #          destination: UserDomainFeed
-        command-input:
+        user-command-input:
           destination: UserCommandFeed
-        command-output:
+        user-command-output:
           destination: UserEventFeed
-#        event-input:
-#          destination: UserEventFeed
-#        event-output:
-#          destination: UserStateFeed
+        user-event-input:
+          destination: UserEventFeed
+        user-event-output:
+          destination: UserStateFeed
 #        domain-input:
 #          destination: UserStateFeed
 #        domain-output:
@@ -27,7 +27,6 @@ spring:
           binder:
             configuration:
               commit.interval.ms: 100
-              key.serializer: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
               default.key.serde: 'org.apache.kafka.common.serialization.Serdes$StringSerde'
               default.value.serde: 'org.springframework.kafka.support.serializer.JsonSerde'
             application-id: 'msp-evolution-user'

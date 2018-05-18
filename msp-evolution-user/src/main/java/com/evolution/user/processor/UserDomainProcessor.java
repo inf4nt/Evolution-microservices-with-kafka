@@ -17,7 +17,7 @@
 //    public KStream<String, UserDomain> process(KStream<String, UserState> input) {
 //        return input.map((k, v) -> new KeyValue<>(k, UserDomain.builder()
 //                .key(k)
-//                .eventNumber(v.getEventNumber())
+//                .eventNumber(v.getOperationNumber())
 //                .username(v.getContent().getUsername())
 //                .password(v.getContent().getPassword())
 //                .nickname(v.getContent().getNickname())

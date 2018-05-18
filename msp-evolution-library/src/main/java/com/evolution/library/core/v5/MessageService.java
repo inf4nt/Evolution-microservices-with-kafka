@@ -9,7 +9,7 @@ public class MessageService {
         return clazz.getSimpleName() + "Feed";
     }
 
-    public static String getStore(Class<? extends Message> clazz) {
+    public static String getStore(Class<? extends State> clazz) {
         return clazz.getSimpleName() + "Store";
     }
 

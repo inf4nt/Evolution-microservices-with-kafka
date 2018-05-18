@@ -1,9 +1,10 @@
 package com.evolution.user.core;
 
 import com.evolution.library.core.v5.CommandHandler;
-import com.evolution.user.core.common.UserEventStatus;
 import com.evolution.library.core.v5.MessageService;
+import com.evolution.user.core.common.UserEventStatus;
 import com.evolution.user.core.common.UserRequestTypes;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -12,10 +13,8 @@ import org.springframework.cloud.stream.binder.kafka.streams.QueryableStoreRegis
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 
-import static com.evolution.user.core.common.UserEventStatus.Fail;
-import static com.evolution.user.core.common.UserEventStatus.Progress;
+import static com.evolution.user.core.common.UserEventStatus.*;
 
 @Service
 public class UserCommandHandler implements CommandHandler<UserCommand, UserEvent> {
@@ -29,53 +28,40 @@ public class UserCommandHandler implements CommandHandler<UserCommand, UserEvent
 
     @Override
     public UserEvent handle(@Valid UserCommand command) {
-        return null;
-    }
+        final ReadOnlyKeyValueStore<String, UserState> store = queryableStoreRegistry
+                .getQueryableStoreType(MessageService.getStore(UserState.class), QueryableStoreTypes.keyValueStore());
 
-//    @Override
-//    public UserEvent handle(@Valid UserCommand command) {
-//        //todo по сути каждая операция команда в евент работает одинаково. Скорее смысл в том чтоб валидировать ее каким-то образом
-//
-//        final ReadOnlyKeyValueStore<String, UserState> store =
-//                queryableStoreRegistry.getQueryableStoreType(MessageService.getStore(UserState.class), QueryableStoreTypes.keyValueStore());
-//
-//        @NotEmpty UserRequestTypes type = command.getRequestType();
-//        UserEvent res = UserEvent.builder().build();
-//        UserEventStatus status = null;
-//
-//        switch (type) {
-//            case UserUpdateFirstNameRequest: {
-//                UserState state = store.get(command.getKey());
-//                if (state == null) {
-//                   status = Fail;
-//                } else {
-//                    status = Progress;
-//                }
-//                break;
-//            }
-//            case UserCreateRequest: {
-//                KeyValueIterator<String, UserState> iterator = store.all();
-//                while (iterator.hasNext()) {
-//                    if (iterator.next().value.getDomain().getUsername().equals(command.getDomain().getUsername())) {
-//                        status = Fail;
-//                        break;
-//                    }
-//                }
-//                if (status != Fail) {
-//                    status = Progress;
-//                }
-//
-//                break;
-//            }
-//            default:
-//                throw new UnsupportedOperationException("Not found request type by " + type);
-//        }
-//
-//        return res
-//                .withRequestType(type)
-//                .withEventStatus(status)
-//                .withCorrelation(MessageService.random())
-//                .withOperationNumber(command.getOperationNumber())
-//                .withDomain(command.getDomain());
-//    }
+        UserRequestTypes type = command.getType();
+
+        UserEvent event = UserEvent.builder().build();
+        UserState state;
+        UserEventStatus status = PROGRESS;
+        switch (type) {
+            case UserUpdateFirstNameRequest:
+                state = store.get(command.getKey());
+                if (state == null) {
+                    status = USER_BY_KEY_NOT_FOUND;
+                }
+                break;
+            case UserCreateRequest:
+                KeyValueIterator<String, UserState> iterator = store.all();
+                String username = command.getContent().getUsername();
+                while (iterator.hasNext()) {
+                    UserState s = iterator.next().value;
+                    if (s.getContent() != null && s.getContent().getUsername().equals(username)) {
+                        status = USER_BY_USER_NAME_ALREADY_EXIST;
+                        break;
+                    }
+                }
+                break;
+        }
+
+        return event
+                .withKey(command.getKey())
+                .withCorrelation(MessageService.random())
+                .withOperationNumber(command.getOperationNumber())
+                .withType(type)
+                .withContent(command.getContent())
+                .withEventStatus(status);
+    }
 }

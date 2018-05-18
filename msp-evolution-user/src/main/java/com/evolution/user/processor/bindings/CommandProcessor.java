@@ -7,12 +7,12 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface CommandProcessor {
 
-    String INPUT = "command-input";
+    String INPUT = "user-command-input";
 
     @Input(INPUT)
     SubscribableChannel input();
 
-    String OUTPUT = "command-output";
+    String OUTPUT = "user-command-output";
 
     @Output(OUTPUT)
     MessageChannel output();

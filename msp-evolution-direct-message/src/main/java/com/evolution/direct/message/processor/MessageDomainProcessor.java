@@ -9,7 +9,6 @@ import com.evolution.direct.message.processor.bindings.DomainProcessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Joined;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -50,7 +49,7 @@ public class MessageDomainProcessor {
                 .selectKey((k, v) -> v.getContent().getSender())
                 .join(userKTable, (ms, us) -> MessageDomainWithSenderTemp.builder()
                                 .key(ms.getKey())
-                                .eventNumber(ms.getEventNumber())
+                                .eventNumber(ms.getOperationNumber())
                                 .sender(us)
                                 .recipient(ms.getContent().getRecipient())
                                 .isRead(ms.getContent().isRead())

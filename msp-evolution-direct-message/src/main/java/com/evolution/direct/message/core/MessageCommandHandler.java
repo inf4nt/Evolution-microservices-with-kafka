@@ -12,6 +12,7 @@ public class MessageCommandHandler implements CommandHandler<MessageCommand, Mes
         //todo validate command
         return MessageEvent.builder()
                 .key(command.getKey())
+                .operationNumber(command.getOperationNumber())
                 .correlation(command.getCorrelation())
                 .eventStatus(MessageEventStatus.Progress)
                 .type(command.getType())

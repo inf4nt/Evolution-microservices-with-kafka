@@ -22,7 +22,7 @@ public class UserState implements State<String, UserContent> {
     String key;
 
     @NotEmpty
-    String eventNumber;
+    String operationNumber;
 
     UserContent content;
 }

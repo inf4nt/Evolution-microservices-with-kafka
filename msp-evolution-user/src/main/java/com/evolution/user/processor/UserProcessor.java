@@ -55,7 +55,7 @@
 //        final Serde<UserEvent> userEventSerde = new JsonSerde<>(UserEvent.class, objectMapper);
 //
 //        return input
-//                .filter((k, v) -> v.getEventStatus() == UserEventStatus.Progress)
+//                .filter((k, v) -> v.getEventStatus() == UserEventStatus.PROGRESS)
 //                .groupByKey(Serialized.with(Serdes.String(), userEventSerde))
 //                .aggregate(UserState::new,
 //                        (key, event, state) -> userEventHandler.handle(event, state),

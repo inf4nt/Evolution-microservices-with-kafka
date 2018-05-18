@@ -27,6 +27,9 @@ public class MessageEvent implements Event<String, MessageContent, MessageReques
     String correlation;
 
     @NotEmpty
+    String operationNumber;
+
+    @NotEmpty
     MessageRequestTypes type;
 
     @NotEmpty

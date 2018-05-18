@@ -16,33 +16,27 @@ public class UserEventHandler implements EventHandler<UserEvent, UserState> {
 
     @Override
     public UserState handle(UserEvent event, UserState state) {
-        return null;
-    }
+        logger.info("Handle event:" + event);
+        UserRequestTypes type = event.getType();
 
-//    @Override
-//    public UserState handle(@Valid UserEvent event, @Valid UserState state) {
-//        UserRequestTypes type = event.getRequestType();
-//        UserState result;
-//
-//        switch (type) {
-//            case UserCreateRequest: {
-//                result = UserState.builder()
-//                        .domain(event.getDomain())
-//                        .build();
-//                break;
-//            }
-//            case UserUpdateFirstNameRequest: {
-//                result = state
-//                        .withDomain(state.getDomain().withFirstName(event.getDomain().getFirstName()));
-//                break;
-//            }
-//            default:
-//                throw new UnsupportedOperationException("Not found request type by " + type);
-//        }
-//
-//        return result
-//                .withRequestType(event.getRequestType())
-//                .withOperationNumber(event.getOperationNumber())
-//                .withCorrelation(MessageService.random());
-//    }
+        switch (type) {
+            case UserCreateRequest:
+                return UserState.builder()
+                        .key(event.getKey())
+                        .operationNumber(event.getOperationNumber())
+                        .content(UserContent.builder()
+                                .username(event.getContent().getUsername())
+                                .password(event.getContent().getPassword())
+                                .firstName(event.getContent().getFirstName())
+                                .lastName(event.getContent().getLastName())
+                                .nickname(event.getContent().getNickname())
+                                .build())
+                        .build();
+            case UserUpdateFirstNameRequest:
+                return state.withContent(state.getContent().withFirstName(event.getContent().getFirstName()))
+                        .withOperationNumber(event.getOperationNumber());
+            default:
+                throw new UnsupportedOperationException("Not found request type !");
+        }
+    }
 }
